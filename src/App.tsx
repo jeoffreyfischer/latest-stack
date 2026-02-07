@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { StackSection } from './components/StackSection'
-import { MOCK_STACKS } from './data/stacks'
+import { STACK_DEFINITIONS } from './data/stacks'
+import { fetchAllVersions } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
 const FAVORITES_KEY = 'latest-stack-favorites'
@@ -24,13 +25,22 @@ function saveFavorites(favorites: Set<string>) {
 
 export default function App() {
   const [favorites, setFavorites] = useState<Set<string>>(loadFavorites)
+  const [versions, setVersions] = useState<Map<string, string>>(new Map())
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    fetchAllVersions(STACK_DEFINITIONS)
+      .then(setVersions)
+      .finally(() => setIsLoading(false))
+  }, [])
 
   const stacks = useMemo(() => {
-    return MOCK_STACKS.map((s) => ({
-      ...s,
-      isFavorite: favorites.has(s.id),
+    return STACK_DEFINITIONS.map((def) => ({
+      ...def,
+      latestVersion: versions.get(def.id) ?? '',
+      isFavorite: favorites.has(def.id),
     }))
-  }, [favorites])
+  }, [versions, favorites])
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
@@ -77,6 +87,12 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+        {isLoading && (
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+            Fetching latest versions…
+          </p>
+        )}
+
         {favoriteStacks.length > 0 && (
           <StackSection
             category="favorites"

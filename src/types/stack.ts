@@ -14,4 +14,5 @@ export interface Stack {
   latestVersion: string
   url: string
   isFavorite: boolean
+  githubRepo?: { owner: string; repo: string }
 }

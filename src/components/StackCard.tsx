@@ -38,7 +38,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               {stack.name}
             </h3>
             <p className="text-sm font-mono font-medium text-emerald-600 dark:text-emerald-400">
-              v{stack.latestVersion}
+              {stack.latestVersion ? `v${stack.latestVersion}` : '—'}
             </p>
           </div>
         </div>
