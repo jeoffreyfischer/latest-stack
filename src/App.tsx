@@ -75,6 +75,11 @@ export default function App() {
     })
   }
 
+  const clearAllFavorites = () => {
+    setFavorites(new Set())
+    saveFavorites(new Set())
+  }
+
   const favoriteStacks = useMemo(
     () =>
       stacks
@@ -139,15 +144,26 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
-        {!isLoading && anySectionHasMore && (
-          <div className="flex justify-center">
-            <button
-              type="button"
-              onClick={() => setExpandAll((e) => !e)}
-              className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-            >
-              {expandAll ? 'Collapse all' : 'Expand all'}
-            </button>
+        {!isLoading && (anySectionHasMore || favoriteStacks.length > 0) && (
+          <div className="flex flex-wrap justify-center gap-2">
+            {anySectionHasMore && (
+              <button
+                type="button"
+                onClick={() => setExpandAll((e) => !e)}
+                className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+              >
+                {expandAll ? 'Collapse all' : 'Expand all'}
+              </button>
+            )}
+            {favoriteStacks.length > 0 && (
+              <button
+                type="button"
+                onClick={clearAllFavorites}
+                className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-2 text-sm font-medium text-amber-700 shadow-sm transition-all hover:border-amber-300 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400 dark:hover:border-amber-700 dark:hover:bg-amber-900/50"
+              >
+                Clear favorites
+              </button>
+            )}
           </div>
         )}
         {isLoading && (
