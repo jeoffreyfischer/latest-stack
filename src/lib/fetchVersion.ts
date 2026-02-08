@@ -176,6 +176,33 @@ export async function fetchElixirVersion(): Promise<string> {
   return fetchEndoflifeVersion('elixir')
 }
 
+export async function fetchVisualStudioVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/visual-studio.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { cycle: string; latest: string }[]
+    // First cycle is newest; use its latest patch version
+    const cycle = data[0]
+    return cycle?.latest ?? cycle?.cycle ?? ''
+  } catch {
+    return ''
+  }
+}
+
+const CURSOR_VERSIONS_API = 'https://cursor-versions.selfhoster.nl/api/v1/versions?version=latest'
+
+/** Cursor IDE has no official releases API; uses community cursor-versions-api. */
+export async function fetchCursorVersion(): Promise<string> {
+  try {
+    const res = await fetch(CURSOR_VERSIONS_API)
+    if (!res.ok) return ''
+    const data = (await res.json()) as { version?: string }
+    return data.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
 /** Dart SDK uses tags, not GitHub Releases. */
 export async function fetchDartVersion(): Promise<string> {
   try {

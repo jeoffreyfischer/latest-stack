@@ -17,6 +17,8 @@ import {
   fetchExpoVersion,
   fetchGitlabRunnerVersion,
   fetchRVersion,
+  fetchVisualStudioVersion,
+  fetchCursorVersion,
 } from './fetchVersion'
 import type { Stack } from '../types/stack'
 
@@ -40,6 +42,8 @@ const VERSION_FETCHERS: Record<VersionSource, () => Promise<string>> = {
   expo: fetchExpoVersion,
   'gitlab-runner': fetchGitlabRunnerVersion,
   r: fetchRVersion,
+  visualstudio: fetchVisualStudioVersion,
+  cursor: fetchCursorVersion,
 }
 
 function hasCustomVersionSource(

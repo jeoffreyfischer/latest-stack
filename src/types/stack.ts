@@ -23,7 +23,7 @@ export interface Stack {
   /** Simple Icons slug for CDN logo (cdn.jsdelivr.net/npm/simple-icons) */
   iconSlug?: string
   /** When set, fetch from this source instead of GitHub Releases. */
-  versionSource?: 'gcp' | 'java' | 'python' | 'go' | 'ruby' | 'php' | 'aws' | 'postgresql' | 'mongodb' | 'mysql' | 'django' | 'elixir' | 'dart' | 'sqlite' | 'expo' | 'gitlab-runner' | 'r'
+  versionSource?: 'gcp' | 'java' | 'python' | 'go' | 'ruby' | 'php' | 'aws' | 'postgresql' | 'mongodb' | 'mysql' | 'django' | 'elixir' | 'dart' | 'sqlite' | 'expo' | 'gitlab-runner' | 'r' | 'visualstudio' | 'cursor'
   /** Override repo for version fetch (e.g. when main url differs from version source) */
   versionRepo?: { owner: string; repo: string }
   /** URL to version/release info when not from GitHub (e.g. endoflife.date, php.watch) */
