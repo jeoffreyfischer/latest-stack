@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { StackSection } from './components/StackSection'
 import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
 import { STACK_DEFINITIONS } from './data/stacks'
-import { fetchAllVersions, loadCache } from './lib/fetchVersions'
+import { fetchAllVersions, getInitialVersionState } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
 const FAVORITES_KEY = 'latest-stack-favorites'
@@ -35,16 +35,16 @@ function saveFavorites(favorites: Set<string>) {
   localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]))
 }
 
+const initialVersionState = getInitialVersionState()
+
 export default function App() {
   const [favorites, setFavorites] = useState<Set<string>>(loadFavorites)
-  const [versions, setVersions] = useState<Map<string, string>>(() => {
-    const cached = loadCache()
-    return cached && cached.size > 0 ? new Map(cached) : new Map()
-  })
-  const [isLoading, setIsLoading] = useState(() => {
-    const cached = loadCache()
-    return !(cached && cached.size > 0)
-  })
+  const [versions, setVersions] = useState<Map<string, string>>(
+    () => initialVersionState.versions
+  )
+  const [isLoading, setIsLoading] = useState(
+    () => initialVersionState.isLoading
+  )
   const [theme, setTheme] = useState<'light' | 'dark'>(loadTheme)
   const [expandAll, setExpandAll] = useState(false)
   const initialCount = useInitialVisibleCount()

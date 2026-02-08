@@ -94,15 +94,19 @@ export async function fetchVersion(owner: string, repo: string): Promise<string>
   }
 }
 
-export async function fetchPythonVersion(): Promise<string> {
+async function fetchEndoflifeVersion(product: string): Promise<string> {
   try {
-    const res = await fetch('https://endoflife.date/api/python.json')
+    const res = await fetch(`https://endoflife.date/api/${product}.json`)
     if (!res.ok) return ''
     const data = (await res.json()) as { latest: string }[]
     return data[0]?.latest ?? ''
   } catch {
     return ''
   }
+}
+
+export async function fetchPythonVersion(): Promise<string> {
+  return fetchEndoflifeVersion('python')
 }
 
 export async function fetchGoVersion(): Promise<string> {
@@ -118,14 +122,7 @@ export async function fetchGoVersion(): Promise<string> {
 }
 
 export async function fetchRubyVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://endoflife.date/api/ruby.json')
-    if (!res.ok) return ''
-    const data = (await res.json()) as { latest: string }[]
-    return data[0]?.latest ?? ''
-  } catch {
-    return ''
-  }
+  return fetchEndoflifeVersion('ruby')
 }
 
 export async function fetchPhpVersion(): Promise<string> {
@@ -160,36 +157,15 @@ export async function fetchAwsVersion(): Promise<string> {
 }
 
 export async function fetchPostgresqlVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://endoflife.date/api/postgresql.json')
-    if (!res.ok) return ''
-    const data = (await res.json()) as { latest: string }[]
-    return data[0]?.latest ?? ''
-  } catch {
-    return ''
-  }
+  return fetchEndoflifeVersion('postgresql')
 }
 
 export async function fetchMongodbVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://endoflife.date/api/mongodb.json')
-    if (!res.ok) return ''
-    const data = (await res.json()) as { latest: string }[]
-    return data[0]?.latest ?? ''
-  } catch {
-    return ''
-  }
+  return fetchEndoflifeVersion('mongodb')
 }
 
 export async function fetchMysqlVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://endoflife.date/api/mysql.json')
-    if (!res.ok) return ''
-    const data = (await res.json()) as { latest: string }[]
-    return data[0]?.latest ?? ''
-  } catch {
-    return ''
-  }
+  return fetchEndoflifeVersion('mysql')
 }
 
 export async function fetchDjangoVersion(): Promise<string> {

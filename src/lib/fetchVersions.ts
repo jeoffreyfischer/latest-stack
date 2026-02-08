@@ -14,20 +14,34 @@ import {
 } from './fetchVersion'
 import type { Stack } from '../types/stack'
 
+type VersionSource = NonNullable<Stack['versionSource']>
+
+const VERSION_FETCHERS: Record<VersionSource, () => Promise<string>> = {
+  gcp: fetchGcpVersion,
+  java: fetchJavaVersion,
+  python: fetchPythonVersion,
+  go: fetchGoVersion,
+  ruby: fetchRubyVersion,
+  php: fetchPhpVersion,
+  aws: fetchAwsVersion,
+  postgresql: fetchPostgresqlVersion,
+  mongodb: fetchMongodbVersion,
+  mysql: fetchMysqlVersion,
+  django: fetchDjangoVersion,
+}
+
+function hasCustomVersionSource(
+  stack: Omit<Stack, 'latestVersion' | 'isFavorite'>
+): stack is Omit<Stack, 'latestVersion' | 'isFavorite'> & { versionSource: VersionSource } {
+  return stack.versionSource != null && stack.versionSource in VERSION_FETCHERS
+}
+
 async function fetchVersionForStack(
   stack: Omit<Stack, 'latestVersion' | 'isFavorite'>
 ): Promise<string> {
-  if (stack.versionSource === 'gcp') return fetchGcpVersion()
-  if (stack.versionSource === 'java') return fetchJavaVersion()
-  if (stack.versionSource === 'python') return fetchPythonVersion()
-  if (stack.versionSource === 'go') return fetchGoVersion()
-  if (stack.versionSource === 'ruby') return fetchRubyVersion()
-  if (stack.versionSource === 'php') return fetchPhpVersion()
-  if (stack.versionSource === 'aws') return fetchAwsVersion()
-  if (stack.versionSource === 'postgresql') return fetchPostgresqlVersion()
-  if (stack.versionSource === 'mongodb') return fetchMongodbVersion()
-  if (stack.versionSource === 'mysql') return fetchMysqlVersion()
-  if (stack.versionSource === 'django') return fetchDjangoVersion()
+  if (hasCustomVersionSource(stack)) {
+    return VERSION_FETCHERS[stack.versionSource]()
+  }
   const repo = stack.versionRepo ?? stack.githubRepo
   if (!repo) return ''
   return fetchVersion(repo.owner, repo.repo)
@@ -36,20 +50,8 @@ async function fetchVersionForStack(
 async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): Promise<Map<string, string>> {
   const results = await Promise.allSettled(
     stacks.map(async (stack) => {
-      const hasVersionSource =
-        stack.versionSource === 'gcp' ||
-        stack.versionSource === 'java' ||
-        stack.versionSource === 'python' ||
-        stack.versionSource === 'go' ||
-        stack.versionSource === 'ruby' ||
-        stack.versionSource === 'php' ||
-        stack.versionSource === 'aws' ||
-        stack.versionSource === 'postgresql' ||
-        stack.versionSource === 'mongodb' ||
-        stack.versionSource === 'mysql' ||
-        stack.versionSource === 'django'
       const version =
-        hasVersionSource || stack.versionRepo || stack.githubRepo
+        hasCustomVersionSource(stack) || stack.versionRepo || stack.githubRepo
           ? await fetchVersionForStack(stack)
           : ''
       return { id: stack.id, version }
@@ -81,6 +83,19 @@ export function loadCache(): Map<string, string> | null {
     return entries.length > 0 ? new Map(entries) : null
   } catch {
     return null
+  }
+}
+
+/** Returns initial versions and loading state for instant display when cache exists. */
+export function getInitialVersionState(): {
+  versions: Map<string, string>
+  isLoading: boolean
+} {
+  const cached = loadCache()
+  const hasCached = cached != null && cached.size > 0
+  return {
+    versions: hasCached ? new Map(cached) : new Map(),
+    isLoading: !hasCached,
   }
 }
 
