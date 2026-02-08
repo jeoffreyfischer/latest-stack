@@ -31,13 +31,15 @@ export function StackSection({ category, stacks, onToggleFavorite }: StackSectio
         ))}
       </div>
       {hasMore && (
+        <div className="mt-4 flex justify-center">
         <button
           type="button"
           onClick={() => setExpanded((e) => !e)}
-          className="mt-4 w-full cursor-pointer rounded-lg border border-slate-200 bg-white py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+          className="w-fit cursor-pointer rounded-lg border border-slate-200 bg-white px-6 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
         >
           {expanded ? 'See less' : `See more (${stacks.length - initialCount} more)`}
         </button>
+        </div>
       )}
     </section>
   )
