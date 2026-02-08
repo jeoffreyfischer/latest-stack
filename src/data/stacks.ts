@@ -26,6 +26,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://python.org',
     githubRepo: { owner: 'python', repo: 'cpython' },
+    versionLink: 'tags',
     iconSlug: 'python',
   },
   {
@@ -44,6 +45,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://go.dev',
     githubRepo: { owner: 'golang', repo: 'go' },
+    versionLink: 'tags',
     iconSlug: 'go',
   },
   {
@@ -52,7 +54,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'language',
     logo: '/placeholder.svg',
     url: 'https://openjdk.org',
-    githubRepo: { owner: 'openjdk', repo: 'jdk' },
+    versionSource: 'java',
+    versionUrl: 'https://adoptium.net/temurin/releases/',
     iconSlug: 'java',
   },
   {
@@ -71,6 +74,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://ruby-lang.org',
     githubRepo: { owner: 'ruby', repo: 'ruby' },
+    versionLink: 'tags',
     iconSlug: 'ruby',
   },
   {
@@ -80,6 +84,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://php.net',
     githubRepo: { owner: 'php', repo: 'php-src' },
+    versionLink: 'tags',
     iconSlug: 'php',
   },
   {
@@ -440,6 +445,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://cloud.google.com',
     versionSource: 'gcp',
+    versionUrl: 'https://cloud.google.com/sdk/docs/release-notes',
     iconSlug: 'googlecloud',
   },
   {

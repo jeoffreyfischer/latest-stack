@@ -43,6 +43,41 @@ export async function fetchGcpVersion(): Promise<string> {
   return ''
 }
 
+const JAVA_API_URL = 'https://api.adoptium.net/v3/info/release_versions?release_type=ga&page_size=1'
+
+export async function fetchJavaVersion(): Promise<string> {
+  const parse = (data: unknown): string => {
+    const d = data as { versions?: Array<{ openjdk_version?: string; semver?: string }> }
+    const v = d.versions?.[0]
+    const raw = v?.openjdk_version ?? v?.semver ?? ''
+    if (!raw) return ''
+    const match = raw.match(/^(\d+\.\d+\.\d+)/)
+    return match ? match[1] : raw
+  }
+  try {
+    const res = await fetch(JAVA_API_URL)
+    if (res.ok) {
+      const data = await res.json()
+      const version = parse(data)
+      if (version) return version
+    }
+  } catch {
+    // ignore
+  }
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy + encodeURIComponent(JAVA_API_URL))
+      if (!res.ok) continue
+      const data = await res.json()
+      const version = parse(data)
+      if (version) return version
+    } catch {
+      continue
+    }
+  }
+  return ''
+}
+
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
     const res = await fetch(

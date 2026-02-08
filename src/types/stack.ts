@@ -20,8 +20,12 @@ export interface Stack {
   githubRepo?: { owner: string; repo: string }
   /** Simple Icons slug for CDN logo (cdn.jsdelivr.net/npm/simple-icons) */
   iconSlug?: string
-  /** When 'gcp', fetch version from Google Cloud SDK components JSON instead of GitHub */
-  versionSource?: 'github' | 'gcp'
+  /** When 'gcp', fetch from Google Cloud SDK. When 'java', fetch from Adoptium API (latest production JDK). */
+  versionSource?: 'github' | 'gcp' | 'java'
   /** Override repo for version fetch (e.g. when main url differs from version source) */
   versionRepo?: { owner: string; repo: string }
+  /** URL to version/release info when not from GitHub (e.g. GCP release notes) */
+  versionUrl?: string
+  /** When 'tags', link to GitHub tags page instead of releases (for repos that use tags but not Releases) */
+  versionLink?: 'releases' | 'tags'
 }
