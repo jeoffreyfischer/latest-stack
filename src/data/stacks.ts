@@ -25,8 +25,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'language',
     logo: '/placeholder.svg',
     url: 'https://python.org',
-    githubRepo: { owner: 'python', repo: 'cpython' },
-    versionLink: 'tags',
+    versionSource: 'python',
+    versionUrl: 'https://endoflife.date/python',
     iconSlug: 'python',
   },
   {
@@ -44,8 +44,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'language',
     logo: '/placeholder.svg',
     url: 'https://go.dev',
-    githubRepo: { owner: 'golang', repo: 'go' },
-    versionLink: 'tags',
+    versionSource: 'go',
+    versionUrl: 'https://go.dev/dl/',
     iconSlug: 'go',
   },
   {
@@ -73,8 +73,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'language',
     logo: '/placeholder.svg',
     url: 'https://ruby-lang.org',
-    githubRepo: { owner: 'ruby', repo: 'ruby' },
-    versionLink: 'tags',
+    versionSource: 'ruby',
+    versionUrl: 'https://endoflife.date/ruby',
     iconSlug: 'ruby',
   },
   {
@@ -83,8 +83,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'language',
     logo: '/placeholder.svg',
     url: 'https://php.net',
-    githubRepo: { owner: 'php', repo: 'php-src' },
-    versionLink: 'tags',
+    versionSource: 'php',
+    versionUrl: 'https://php.watch/versions',
     iconSlug: 'php',
   },
   {
@@ -174,7 +174,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'backend',
     logo: '/placeholder.svg',
     url: 'https://djangoproject.com',
-    githubRepo: { owner: 'django', repo: 'django' },
+    versionSource: 'django',
+    versionUrl: 'https://pypi.org/project/Django/',
     iconSlug: 'django',
   },
   {
@@ -390,7 +391,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'database',
     logo: '/placeholder.svg',
     url: 'https://postgresql.org',
-    githubRepo: { owner: 'postgres', repo: 'postgres' },
+    versionSource: 'postgresql',
+    versionUrl: 'https://endoflife.date/postgresql',
     iconSlug: 'postgresql',
   },
   {
@@ -399,7 +401,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'database',
     logo: '/placeholder.svg',
     url: 'https://mongodb.com',
-    githubRepo: { owner: 'mongodb', repo: 'mongo' },
+    versionSource: 'mongodb',
+    versionUrl: 'https://endoflife.date/mongodb',
     iconSlug: 'mongodb',
   },
   {
@@ -408,7 +411,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'database',
     logo: '/placeholder.svg',
     url: 'https://mysql.com',
-    githubRepo: { owner: 'mysql', repo: 'mysql-server' },
+    versionSource: 'mysql',
+    versionUrl: 'https://endoflife.date/mysql',
     iconSlug: 'mysql',
   },
   {
@@ -435,7 +439,8 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'cloud',
     logo: '/placeholder.svg',
     url: 'https://aws.amazon.com',
-    githubRepo: { owner: 'aws', repo: 'aws-cli' },
+    versionSource: 'aws',
+    versionUrl: 'https://github.com/aws/aws-cli/tags',
     iconSlug: 'amazonaws',
   },
   {

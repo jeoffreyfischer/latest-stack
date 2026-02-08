@@ -30,9 +30,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
   const versionLinkUrl = stack.versionUrl
     ? stack.versionUrl
     : stack.githubRepo
-      ? stack.versionLink === 'tags'
-        ? `https://github.com/${stack.githubRepo.owner}/${stack.githubRepo.repo}/tags`
-        : `https://github.com/${stack.githubRepo.owner}/${stack.githubRepo.repo}/releases`
+      ? `https://github.com/${stack.githubRepo.owner}/${stack.githubRepo.repo}/releases`
       : null
   const useWorldIcon = !!stack.versionUrl
 

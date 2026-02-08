@@ -78,29 +78,126 @@ export async function fetchJavaVersion(): Promise<string> {
   return ''
 }
 
+/** Uses GitHub Releases only (no tags fallback). */
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
     const res = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
       { headers }
     )
-    if (res.ok) {
-      const data = (await res.json()) as { tag_name: string }
-      const tag = data.tag_name ?? ''
-      return normalizeTag(tag)
-    }
-    // Fallback: some repos use tags but not GitHub Releases (404)
-    if (res.status === 404) {
-      const tagsRes = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`,
-        { headers }
-      )
-      if (!tagsRes.ok) return ''
-      const tags = (await tagsRes.json()) as { name: string }[]
-      const tag = tags[0]?.name ?? ''
-      return normalizeTag(tag)
-    }
+    if (!res.ok) return ''
+    const data = (await res.json()) as { tag_name: string }
+    const tag = data.tag_name ?? ''
+    return normalizeTag(tag)
+  } catch {
     return ''
+  }
+}
+
+export async function fetchPythonVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/python.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { latest: string }[]
+    return data[0]?.latest ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchGoVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://go.dev/dl/?mode=json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { version: string; stable: boolean }[]
+    const stable = data.find((x) => x.stable)
+    return stable ? normalizeTag(stable.version) : ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchRubyVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/ruby.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { latest: string }[]
+    return data[0]?.latest ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchPhpVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://php.watch/api/v1/versions')
+    if (!res.ok) return ''
+    const body = (await res.json()) as {
+      data?: Record<string, { name: string; isLatestVersion?: boolean }>
+    }
+    const data = body.data ?? {}
+    const latest = Object.values(data).find((v) => v.isLatestVersion)
+    return latest?.name ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** AWS CLI has no GitHub Releases; uses tags instead. */
+export async function fetchAwsVersion(): Promise<string> {
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/aws/aws-cli/tags?per_page=1',
+      { headers }
+    )
+    if (!res.ok) return ''
+    const data = (await res.json()) as { name: string }[]
+    const tag = data[0]?.name ?? ''
+    return normalizeTag(tag)
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchPostgresqlVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/postgresql.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { latest: string }[]
+    return data[0]?.latest ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchMongodbVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/mongodb.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { latest: string }[]
+    return data[0]?.latest ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchMysqlVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://endoflife.date/api/mysql.json')
+    if (!res.ok) return ''
+    const data = (await res.json()) as { latest: string }[]
+    return data[0]?.latest ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export async function fetchDjangoVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://pypi.org/pypi/Django/json')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { info?: { version?: string } }
+    return body.info?.version ?? ''
   } catch {
     return ''
   }

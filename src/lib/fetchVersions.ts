@@ -1,4 +1,17 @@
-import { fetchVersion, fetchGcpVersion, fetchJavaVersion } from './fetchVersion'
+import {
+  fetchVersion,
+  fetchGcpVersion,
+  fetchJavaVersion,
+  fetchPythonVersion,
+  fetchGoVersion,
+  fetchRubyVersion,
+  fetchPhpVersion,
+  fetchAwsVersion,
+  fetchPostgresqlVersion,
+  fetchMongodbVersion,
+  fetchMysqlVersion,
+  fetchDjangoVersion,
+} from './fetchVersion'
 import type { Stack } from '../types/stack'
 
 async function fetchVersionForStack(
@@ -6,6 +19,15 @@ async function fetchVersionForStack(
 ): Promise<string> {
   if (stack.versionSource === 'gcp') return fetchGcpVersion()
   if (stack.versionSource === 'java') return fetchJavaVersion()
+  if (stack.versionSource === 'python') return fetchPythonVersion()
+  if (stack.versionSource === 'go') return fetchGoVersion()
+  if (stack.versionSource === 'ruby') return fetchRubyVersion()
+  if (stack.versionSource === 'php') return fetchPhpVersion()
+  if (stack.versionSource === 'aws') return fetchAwsVersion()
+  if (stack.versionSource === 'postgresql') return fetchPostgresqlVersion()
+  if (stack.versionSource === 'mongodb') return fetchMongodbVersion()
+  if (stack.versionSource === 'mysql') return fetchMysqlVersion()
+  if (stack.versionSource === 'django') return fetchDjangoVersion()
   const repo = stack.versionRepo ?? stack.githubRepo
   if (!repo) return ''
   return fetchVersion(repo.owner, repo.repo)
@@ -14,11 +36,20 @@ async function fetchVersionForStack(
 async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): Promise<Map<string, string>> {
   const results = await Promise.allSettled(
     stacks.map(async (stack) => {
-      const version =
+      const hasVersionSource =
         stack.versionSource === 'gcp' ||
         stack.versionSource === 'java' ||
-        stack.versionRepo ||
-        stack.githubRepo
+        stack.versionSource === 'python' ||
+        stack.versionSource === 'go' ||
+        stack.versionSource === 'ruby' ||
+        stack.versionSource === 'php' ||
+        stack.versionSource === 'aws' ||
+        stack.versionSource === 'postgresql' ||
+        stack.versionSource === 'mongodb' ||
+        stack.versionSource === 'mysql' ||
+        stack.versionSource === 'django'
+      const version =
+        hasVersionSource || stack.versionRepo || stack.githubRepo
           ? await fetchVersionForStack(stack)
           : ''
       return { id: stack.id, version }
@@ -33,7 +64,7 @@ async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): 
   return map
 }
 
-const CACHE_KEY = 'latest-stack-versions-v2'
+const CACHE_KEY = 'latest-stack-versions-v5'
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
 
 function loadCache(): Map<string, string> | null {
