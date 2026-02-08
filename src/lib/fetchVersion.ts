@@ -250,15 +250,19 @@ function compareSemver(a: string, b: string): number {
   return 0
 }
 
-export async function fetchExpoVersion(): Promise<string> {
+async function fetchNpmVersion(packageName: string): Promise<string> {
   try {
-    const res = await fetch('https://registry.npmjs.org/expo/latest')
+    const res = await fetch(`https://registry.npmjs.org/${packageName}/latest`)
     if (!res.ok) return ''
     const body = (await res.json()) as { version?: string }
     return body.version ?? ''
   } catch {
     return ''
   }
+}
+
+export async function fetchExpoVersion(): Promise<string> {
+  return fetchNpmVersion('expo')
 }
 
 const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/releases?per_page=1'
@@ -284,14 +288,7 @@ export async function fetchRVersion(): Promise<string> {
 
 /** Qwik framework: GitHub latest is eslint-plugin; use npm @builder.io/qwik. */
 export async function fetchQwikVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/@builder.io/qwik/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('@builder.io/qwik')
 }
 
 const ENDOFLIFE_PHOENIX_URL = 'https://endoflife.date/api/phoenix.json'
@@ -315,50 +312,22 @@ export async function fetchPhoenixVersion(): Promise<string> {
 
 /** Alpine.js: npm registry. */
 export async function fetchAlpinejsVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/alpinejs/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('alpinejs')
 }
 
 /** HTMX: npm registry (htmx.org package). */
 export async function fetchHtmxVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/htmx.org/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('htmx.org')
 }
 
 /** Apollo Server: npm @apollo/server. */
 export async function fetchApolloServerVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/@apollo/server/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('@apollo/server')
 }
 
 /** GraphQL.js: npm graphql. */
 export async function fetchGraphqlVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/graphql/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('graphql')
 }
 
 /** Deno: GitHub releases (denoland/deno). */
@@ -378,14 +347,7 @@ export async function fetchOpensearchVersion(): Promise<string> {
 
 /** DynamoDB: AWS managed service; track @aws-sdk/client-dynamodb from npm. */
 export async function fetchDynamodbVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://registry.npmjs.org/@aws-sdk/client-dynamodb/latest')
-    if (!res.ok) return ''
-    const body = (await res.json()) as { version?: string }
-    return body.version ?? ''
-  } catch {
-    return ''
-  }
+  return fetchNpmVersion('@aws-sdk/client-dynamodb')
 }
 
 /** JUnit: GitHub releases (junit-team/junit5). */
