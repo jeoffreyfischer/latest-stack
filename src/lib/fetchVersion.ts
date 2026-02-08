@@ -76,6 +76,22 @@ export async function fetchJavaVersion(): Promise<string> {
   return fetchWithCorsProxy(JAVA_API_URL, parse)
 }
 
+/** Fetches latest version from GitHub tags (e.g. repos that don't use Releases). */
+async function fetchVersionFromTags(owner: string, repo: string): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`,
+      { headers }
+    )
+    if (!res.ok) return ''
+    const data = (await res.json()) as { name: string }[]
+    const tag = data[0]?.name ?? ''
+    return tag ? normalizeTag(tag) : ''
+  } catch {
+    return ''
+  }
+}
+
 /** Uses GitHub Releases only (no tags fallback). */
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
@@ -129,18 +145,7 @@ export async function fetchPhpVersion(): Promise<string> {
 
 /** AWS CLI has no GitHub Releases; uses tags instead. */
 export async function fetchAwsVersion(): Promise<string> {
-  try {
-    const res = await fetch(
-      'https://api.github.com/repos/aws/aws-cli/tags?per_page=1',
-      { headers }
-    )
-    if (!res.ok) return ''
-    const data = (await res.json()) as { name: string }[]
-    const tag = data[0]?.name ?? ''
-    return normalizeTag(tag)
-  } catch {
-    return ''
-  }
+  return fetchVersionFromTags('aws', 'aws-cli')
 }
 
 export async function fetchPostgresqlVersion(): Promise<string> {
@@ -199,18 +204,7 @@ export async function fetchCursorVersion(): Promise<string> {
 
 /** Dart SDK uses tags, not GitHub Releases. */
 export async function fetchDartVersion(): Promise<string> {
-  try {
-    const res = await fetch(
-      'https://api.github.com/repos/dart-lang/sdk/tags?per_page=1',
-      { headers }
-    )
-    if (!res.ok) return ''
-    const data = (await res.json()) as { name: string }[]
-    const tag = data[0]?.name ?? ''
-    return normalizeTag(tag)
-  } catch {
-    return ''
-  }
+  return fetchVersionFromTags('dart-lang', 'sdk')
 }
 
 /** SQLite uses tags (version-X.Y.Z or vesion-X.Y.Z typo), not GitHub Releases. */
@@ -327,18 +321,7 @@ export async function fetchJunitVersion(): Promise<string> {
 
 /** Nix: uses tags, not GitHub Releases. */
 export async function fetchNixVersion(): Promise<string> {
-  try {
-    const res = await fetch(
-      'https://api.github.com/repos/NixOS/nix/tags?per_page=1',
-      { headers }
-    )
-    if (!res.ok) return ''
-    const data = (await res.json()) as { name: string }[]
-    const tag = data[0]?.name ?? ''
-    return tag ? normalizeTag(tag) : ''
-  } catch {
-    return ''
-  }
+  return fetchVersionFromTags('NixOS', 'nix')
 }
 
 /** Talos Linux: GitHub releases (siderolabs/talos). */
