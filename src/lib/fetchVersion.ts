@@ -1,6 +1,7 @@
 function normalizeTag(tag: string): string {
   return tag
     .replace(/^docker-v/, '')  // moby/moby: "docker-v29.2.1" → "29.2.1"
+    .replace(/^go/, '')        // golang/go: "go1.22.0" → "1.22.0"
     .replace(/^v/, '')          // standard: "v1.2.3" → "1.2.3"
 }
 
