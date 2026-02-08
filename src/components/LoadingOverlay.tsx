@@ -19,10 +19,7 @@ export function LoadingOverlay({ show }: LoadingOverlayProps) {
         <div className="flex flex-col items-center gap-6 rounded-2xl bg-white px-12 py-10 shadow-xl dark:bg-slate-800">
           <span className="h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500 dark:border-slate-600 dark:border-t-emerald-400" />
           <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
-            Fetching latest versions…
-          </p>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            The first load is the longest and always takes a few seconds.
+            Almost there… Initial load takes a few seconds 🫠
           </p>
         </div>
       </div>
