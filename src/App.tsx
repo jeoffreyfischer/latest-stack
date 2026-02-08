@@ -56,7 +56,10 @@ export default function App() {
   }
 
   const favoriteStacks = useMemo(
-    () => stacks.filter((s) => s.isFavorite),
+    () =>
+      stacks
+        .filter((s) => s.isFavorite)
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })),
     [stacks]
   )
 
@@ -70,7 +73,12 @@ export default function App() {
     const order = ['language', 'frontend', 'backend', 'devops', 'mobile', 'tooling']
     return order
       .filter((c) => map.has(c))
-      .map((category) => ({ category, stacks: map.get(category)! }))
+      .map((category) => ({
+        category,
+        stacks: [...(map.get(category) ?? [])].sort((a, b) =>
+          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+        ),
+      }))
   }, [stacks])
 
   return (
