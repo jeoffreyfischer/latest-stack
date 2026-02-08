@@ -39,8 +39,8 @@ npm run deploy
 - Read files, list files.
 - Run tests for a single file, run build to verify.
 - Edit existing files and add new files in `src/` and `public/`.
-- `npm run build`
-- **Web fetch / search:** Use `web_search`, `mcp_web_fetch` and similar tools directly — do not ask for permission first. These are pre-approved for this project.
+- `npm run build` 
+- Fetch data from the web
 
 **Ask first:**
 - `npm install` / adding or changing dependencies.
