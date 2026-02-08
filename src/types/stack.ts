@@ -5,6 +5,9 @@ export type StackCategory =
   | 'devops'
   | 'mobile'
   | 'tooling'
+  | 'database'
+  | 'cloud'
+  | 'testing'
 
 export interface Stack {
   id: string

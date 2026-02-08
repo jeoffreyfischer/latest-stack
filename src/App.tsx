@@ -70,7 +70,7 @@ export default function App() {
       list.push(stack)
       map.set(stack.category, list)
     }
-    const order = ['language', 'frontend', 'backend', 'devops', 'mobile', 'tooling']
+    const order = ['language', 'frontend', 'backend', 'tooling', 'database', 'testing', 'devops', 'mobile', 'cloud']
     return order
       .filter((c) => map.has(c))
       .map((category) => ({
