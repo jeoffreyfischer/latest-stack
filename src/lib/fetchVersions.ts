@@ -67,7 +67,8 @@ async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): 
 const CACHE_KEY = 'latest-stack-versions-v5'
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
 
-function loadCache(): Map<string, string> | null {
+/** Synchronously loads cached versions for instant display on mount. */
+export function loadCache(): Map<string, string> | null {
   try {
     const raw = localStorage.getItem(CACHE_KEY)
     if (!raw) return null
