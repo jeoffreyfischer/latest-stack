@@ -55,7 +55,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleGitHubClick}
-              className="rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+              className="cursor-pointer rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"
               aria-label="View latest release on GitHub"
             >
               <GitHubIcon />
@@ -64,7 +64,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
           <button
             type="button"
             onClick={handleStarClick}
-            className="rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-amber-500 dark:hover:bg-slate-700 dark:hover:text-amber-400"
+            className="cursor-pointer rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-amber-500 dark:hover:bg-slate-700 dark:hover:text-amber-400"
             aria-label={stack.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
             {stack.isFavorite ? (

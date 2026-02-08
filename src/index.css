@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+button,
+a[href],
+[role="button"] {
+  cursor: pointer;
+}
