@@ -11,6 +11,12 @@ import {
   fetchMongodbVersion,
   fetchMysqlVersion,
   fetchDjangoVersion,
+  fetchElixirVersion,
+  fetchDartVersion,
+  fetchSqliteVersion,
+  fetchExpoVersion,
+  fetchGitlabRunnerVersion,
+  fetchRVersion,
 } from './fetchVersion'
 import type { Stack } from '../types/stack'
 
@@ -28,6 +34,12 @@ const VERSION_FETCHERS: Record<VersionSource, () => Promise<string>> = {
   mongodb: fetchMongodbVersion,
   mysql: fetchMysqlVersion,
   django: fetchDjangoVersion,
+  elixir: fetchElixirVersion,
+  dart: fetchDartVersion,
+  sqlite: fetchSqliteVersion,
+  expo: fetchExpoVersion,
+  'gitlab-runner': fetchGitlabRunnerVersion,
+  r: fetchRVersion,
 }
 
 function hasCustomVersionSource(
@@ -66,7 +78,7 @@ async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): 
   return map
 }
 
-const CACHE_KEY = 'latest-stack-versions-v5'
+const CACHE_KEY = 'latest-stack-versions-v7'
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
 
 /** Synchronously loads cached versions for instant display on mount. */

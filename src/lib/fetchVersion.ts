@@ -1,8 +1,11 @@
 function normalizeTag(tag: string): string {
   return tag
-    .replace(/^docker-v/, '')  // moby/moby: "docker-v29.2.1" → "29.2.1"
-    .replace(/^go/, '')        // golang/go: "go1.22.0" → "1.22.0"
-    .replace(/^v/, '')          // standard: "v1.2.3" → "1.2.3"
+    .replace(/^docker-v/, '')       // moby/moby: "docker-v29.2.1" → "29.2.1"
+    .replace(/^go/, '')             // golang/go: "go1.22.0" → "1.22.0"
+    .replace(/^swift-/, '')         // swiftlang/swift: "swift-6.2.3-RELEASE" → "6.2.3-RELEASE"
+    .replace(/-RELEASE$/i, '')      // "6.2.3-RELEASE" → "6.2.3"
+    .replace(/^(vesion|version)-/, '')  // sqlite/sqlite: "version-3.51.2" or "vesion-3.45.1" → "3.51.2"
+    .replace(/^v/, '')              // standard: "v1.2.3" → "1.2.3"
 }
 
 const headers: HeadersInit = {}
@@ -167,4 +170,104 @@ export async function fetchDjangoVersion(): Promise<string> {
   } catch {
     return ''
   }
+}
+
+export async function fetchElixirVersion(): Promise<string> {
+  return fetchEndoflifeVersion('elixir')
+}
+
+/** Dart SDK uses tags, not GitHub Releases. */
+export async function fetchDartVersion(): Promise<string> {
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/dart-lang/sdk/tags?per_page=1',
+      { headers }
+    )
+    if (!res.ok) return ''
+    const data = (await res.json()) as { name: string }[]
+    const tag = data[0]?.name ?? ''
+    return normalizeTag(tag)
+  } catch {
+    return ''
+  }
+}
+
+/** SQLite uses tags (version-X.Y.Z or vesion-X.Y.Z typo), not GitHub Releases. */
+export async function fetchSqliteVersion(): Promise<string> {
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/sqlite/sqlite/tags?per_page=30',
+      { headers }
+    )
+    if (!res.ok) return ''
+    const data = (await res.json()) as { name: string }[]
+    let best = ''
+    for (const t of data) {
+      const v = normalizeTag(t.name)
+      if (v && (!best || compareSemver(v, best) > 0)) best = v
+    }
+    return best
+  } catch {
+    return ''
+  }
+}
+
+function compareSemver(a: string, b: string): number {
+  const pa = a.split('.').map(Number)
+  const pb = b.split('.').map(Number)
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const x = pa[i] ?? 0
+    const y = pb[i] ?? 0
+    if (x !== y) return x - y
+  }
+  return 0
+}
+
+export async function fetchExpoVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/expo/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/releases?per_page=1'
+
+const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
+
+/** R-hub API has no CORS; uses proxy. */
+export async function fetchRVersion(): Promise<string> {
+  const encoded = encodeURIComponent(R_HUB_API)
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy + encoded)
+      if (!res.ok) continue
+      const body = (await res.json()) as { version?: string }
+      const v = body.version ?? ''
+      if (v) return v
+    } catch {
+      continue
+    }
+  }
+  return ''
+}
+
+/** GitLab Runner is on GitLab.com, not GitHub; uses CORS proxy. */
+export async function fetchGitlabRunnerVersion(): Promise<string> {
+  const encoded = encodeURIComponent(GITLAB_RUNNER_API)
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy + encoded)
+      if (!res.ok) continue
+      const data = (await res.json()) as { tag_name?: string }[]
+      const tag = data[0]?.tag_name ?? ''
+      if (tag) return normalizeTag(tag)
+    } catch {
+      continue
+    }
+  }
+  return ''
 }
