@@ -137,6 +137,38 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     url: 'https://eslint.org',
     githubRepo: { owner: 'eslint', repo: 'eslint' },
   },
+  {
+    id: '18',
+    name: 'Vite',
+    category: 'tooling',
+    logo: '/placeholder.svg',
+    url: 'https://vite.dev',
+    githubRepo: { owner: 'vitejs', repo: 'vite' },
+  },
+  {
+    id: '19',
+    name: 'Prettier',
+    category: 'tooling',
+    logo: '/placeholder.svg',
+    url: 'https://prettier.io',
+    githubRepo: { owner: 'prettier', repo: 'prettier' },
+  },
+  {
+    id: '20',
+    name: 'Webpack',
+    category: 'tooling',
+    logo: '/placeholder.svg',
+    url: 'https://webpack.js.org',
+    githubRepo: { owner: 'webpack', repo: 'webpack' },
+  },
+  {
+    id: '21',
+    name: 'GitHub Actions',
+    category: 'tooling',
+    logo: '/placeholder.svg',
+    url: 'https://github.com/features/actions',
+    githubRepo: { owner: 'actions', repo: 'runner' },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<string, string> = {
