@@ -918,6 +918,21 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
   },
 ]
 
+/** Display order for category sections (favorites is rendered separately). */
+export const CATEGORY_ORDER: readonly string[] = [
+  'language',
+  'frontend',
+  'backend',
+  'tooling',
+  'editors',
+  'cicd',
+  'database',
+  'cloud',
+  'testing',
+  'devops',
+  'mobile',
+]
+
 export const CATEGORY_LABELS: Record<string, string> = {
   favorites: 'Favorites',
   language: 'Languages & Runtimes',

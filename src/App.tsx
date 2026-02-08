@@ -5,7 +5,7 @@ import { GitHubIcon, SunIcon, MoonIcon } from './components/icons'
 import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
 import { useTheme } from './hooks/useTheme'
 import { useFavorites } from './hooks/useFavorites'
-import { STACK_DEFINITIONS } from './data/stacks'
+import { STACK_DEFINITIONS, CATEGORY_ORDER } from './data/stacks'
 import { fetchAllVersions, getInitialVersionState } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
@@ -52,8 +52,7 @@ export default function App() {
       list.push(stack)
       map.set(stack.category, list)
     }
-    const order = ['language', 'frontend', 'backend', 'tooling', 'editors', 'cicd', 'database', 'cloud', 'testing', 'devops', 'mobile']
-    return order
+    return CATEGORY_ORDER
       .filter((c) => map.has(c))
       .map((category) => {
         let categoryStacks = map.get(category) ?? []
