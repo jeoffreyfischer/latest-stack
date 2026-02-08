@@ -73,7 +73,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
             </h3>
             <p
               className="truncate text-sm font-mono font-medium text-emerald-600 dark:text-emerald-400"
-              title={stack.latestVersion ? `v${stack.latestVersion}` : undefined}
+              title={stack.name}
             >
               {stack.latestVersion ? `v${stack.latestVersion}` : '—'}
             </p>
@@ -88,6 +88,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               onClick={handleVersionLinkClick}
               className="cursor-pointer rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"
               aria-label={useWorldIcon ? 'View version info' : 'View releases on GitHub'}
+              title="Link to version page"
             >
               {useWorldIcon ? <WorldIcon /> : <GitHubIcon />}
             </a>
