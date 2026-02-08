@@ -124,7 +124,7 @@ export default function App() {
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
               <span className="text-gradient">Latest Stack Versions</span>
               <br />
-              <span className="mt-1 inline-block bg-gradient-to-r from-emerald-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-cyan-400 dark:to-violet-400">
+              <span className="mt-1 inline-block pb-[0.2em] bg-gradient-to-r from-emerald-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-cyan-400 dark:to-violet-400">
                 One Dashboard. Always Current.
               </span>
             </h1>
