@@ -19,6 +19,19 @@ import {
   fetchRVersion,
   fetchVisualStudioVersion,
   fetchCursorVersion,
+  fetchQwikVersion,
+  fetchPhoenixVersion,
+  fetchAlpinejsVersion,
+  fetchHtmxVersion,
+  fetchApolloServerVersion,
+  fetchGraphqlVersion,
+  fetchDenoVersion,
+  fetchCorepackVersion,
+  fetchOpensearchVersion,
+  fetchDynamodbVersion,
+  fetchJunitVersion,
+  fetchNixVersion,
+  fetchTalosVersion,
 } from './fetchVersion'
 import type { Stack } from '../types/stack'
 
@@ -44,6 +57,19 @@ const VERSION_FETCHERS: Record<VersionSource, () => Promise<string>> = {
   r: fetchRVersion,
   visualstudio: fetchVisualStudioVersion,
   cursor: fetchCursorVersion,
+  qwik: fetchQwikVersion,
+  phoenix: fetchPhoenixVersion,
+  alpinejs: fetchAlpinejsVersion,
+  htmx: fetchHtmxVersion,
+  'apollo-server': fetchApolloServerVersion,
+  graphql: fetchGraphqlVersion,
+  deno: fetchDenoVersion,
+  corepack: fetchCorepackVersion,
+  opensearch: fetchOpensearchVersion,
+  dynamodb: fetchDynamodbVersion,
+  junit: fetchJunitVersion,
+  nix: fetchNixVersion,
+  talos: fetchTalosVersion,
 }
 
 function hasCustomVersionSource(
@@ -82,7 +108,7 @@ async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): 
   return map
 }
 
-const CACHE_KEY = 'latest-stack-versions-v7'
+const CACHE_KEY = 'latest-stack-versions-v8'
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
 
 /** Synchronously loads cached versions for instant display on mount. */

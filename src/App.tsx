@@ -104,12 +104,19 @@ export default function App() {
     const order = ['language', 'frontend', 'backend', 'tooling', 'editors', 'cicd', 'database', 'cloud', 'testing', 'devops', 'mobile']
     return order
       .filter((c) => map.has(c))
-      .map((category) => ({
-        category,
-        stacks: [...(map.get(category) ?? [])].sort((a, b) =>
-          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-        ),
-      }))
+      .map((category) => {
+        let categoryStacks = map.get(category) ?? []
+        // Remove stray "R" from tooling (R language belongs in Languages, not Tooling)
+        if (category === 'tooling') {
+          categoryStacks = categoryStacks.filter((s) => s.name !== 'R')
+        }
+        return {
+          category,
+          stacks: [...categoryStacks].sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+          ),
+        }
+      })
   }, [stacks])
 
   const anySectionHasMore =

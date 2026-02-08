@@ -282,6 +282,138 @@ export async function fetchRVersion(): Promise<string> {
   return ''
 }
 
+/** Qwik framework: GitHub latest is eslint-plugin; use npm @builder.io/qwik. */
+export async function fetchQwikVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/@builder.io/qwik/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+const ENDOFLIFE_PHOENIX_URL = 'https://endoflife.date/api/phoenix.json'
+
+/** Phoenix: endoflife.date blocks CORS; use proxy. */
+export async function fetchPhoenixVersion(): Promise<string> {
+  const encoded = encodeURIComponent(ENDOFLIFE_PHOENIX_URL)
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy + encoded)
+      if (!res.ok) continue
+      const data = (await res.json()) as { latest: string }[]
+      const v = data[0]?.latest ?? ''
+      if (v) return v
+    } catch {
+      continue
+    }
+  }
+  return ''
+}
+
+/** Alpine.js: npm registry. */
+export async function fetchAlpinejsVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/alpinejs/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** HTMX: npm registry (htmx.org package). */
+export async function fetchHtmxVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/htmx.org/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** Apollo Server: npm @apollo/server. */
+export async function fetchApolloServerVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/@apollo/server/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** GraphQL.js: npm graphql. */
+export async function fetchGraphqlVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/graphql/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** Deno: GitHub releases (denoland/deno). */
+export async function fetchDenoVersion(): Promise<string> {
+  return fetchVersion('denoland', 'deno')
+}
+
+/** Corepack: GitHub releases (nodejs/corepack). */
+export async function fetchCorepackVersion(): Promise<string> {
+  return fetchVersion('nodejs', 'corepack')
+}
+
+/** OpenSearch: GitHub releases. */
+export async function fetchOpensearchVersion(): Promise<string> {
+  return fetchVersion('opensearch-project', 'OpenSearch')
+}
+
+/** DynamoDB: AWS managed service; track @aws-sdk/client-dynamodb from npm. */
+export async function fetchDynamodbVersion(): Promise<string> {
+  try {
+    const res = await fetch('https://registry.npmjs.org/@aws-sdk/client-dynamodb/latest')
+    if (!res.ok) return ''
+    const body = (await res.json()) as { version?: string }
+    return body.version ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** JUnit: GitHub releases (junit-team/junit5). */
+export async function fetchJunitVersion(): Promise<string> {
+  return fetchVersion('junit-team', 'junit5')
+}
+
+/** Nix: uses tags, not GitHub Releases. */
+export async function fetchNixVersion(): Promise<string> {
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/NixOS/nix/tags?per_page=1',
+      { headers }
+    )
+    if (!res.ok) return ''
+    const data = (await res.json()) as { name: string }[]
+    const tag = data[0]?.name ?? ''
+    return tag ? normalizeTag(tag) : ''
+  } catch {
+    return ''
+  }
+}
+
+/** Talos Linux: GitHub releases (siderolabs/talos). */
+export async function fetchTalosVersion(): Promise<string> {
+  return fetchVersion('siderolabs', 'talos')
+}
+
 /** GitLab Runner is on GitLab.com, not GitHub; uses CORS proxy. */
 export async function fetchGitlabRunnerVersion(): Promise<string> {
   const encoded = encodeURIComponent(GITLAB_RUNNER_API)
