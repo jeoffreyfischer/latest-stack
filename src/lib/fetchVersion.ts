@@ -21,30 +21,35 @@ const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
 ]
 
-export async function fetchGcpVersion(): Promise<string> {
-  const encoded = encodeURIComponent(GCP_COMPONENTS_URL)
+async function fetchWithCorsProxy(url: string, parse: (data: unknown) => string): Promise<string> {
+  const encoded = encodeURIComponent(url)
   for (const proxy of CORS_PROXIES) {
     try {
       const res = await fetch(proxy + encoded)
       if (!res.ok) continue
-      const data = (await res.json()) as {
-        components?: Array<{
-          id?: string
-          version?: { version_string?: string }
-        }>
-      }
-      const core = data.components?.find((c) => c.id === 'core')
-      const version = core?.version?.version_string ?? ''
-      if (version) return version
-      const fallback = data.components?.find((c) =>
-        ['beta', 'alpha'].includes(c.id ?? '')
-      )
-      if (fallback?.version?.version_string) return fallback.version.version_string
+      const data = await res.json()
+      const v = parse(data)
+      if (v) return v
     } catch {
       continue
     }
   }
   return ''
+}
+
+function parseGcpVersion(data: unknown): string {
+  const d = data as {
+    components?: Array<{ id?: string; version?: { version_string?: string } }>
+  }
+  const core = d.components?.find((c) => c.id === 'core')
+  const version = core?.version?.version_string ?? ''
+  if (version) return version
+  const fallback = d.components?.find((c) => ['beta', 'alpha'].includes(c.id ?? ''))
+  return fallback?.version?.version_string ?? ''
+}
+
+export async function fetchGcpVersion(): Promise<string> {
+  return fetchWithCorsProxy(GCP_COMPONENTS_URL, parseGcpVersion)
 }
 
 const JAVA_API_URL = 'https://api.adoptium.net/v3/info/release_versions?release_type=ga&page_size=1'
@@ -68,18 +73,7 @@ export async function fetchJavaVersion(): Promise<string> {
   } catch {
     // ignore
   }
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(proxy + encodeURIComponent(JAVA_API_URL))
-      if (!res.ok) continue
-      const data = await res.json()
-      const version = parse(data)
-      if (version) return version
-    } catch {
-      continue
-    }
-  }
-  return ''
+  return fetchWithCorsProxy(JAVA_API_URL, parse)
 }
 
 /** Uses GitHub Releases only (no tags fallback). */
@@ -271,19 +265,7 @@ const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
 
 /** R-hub API has no CORS; uses proxy. */
 export async function fetchRVersion(): Promise<string> {
-  const encoded = encodeURIComponent(R_HUB_API)
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(proxy + encoded)
-      if (!res.ok) continue
-      const body = (await res.json()) as { version?: string }
-      const v = body.version ?? ''
-      if (v) return v
-    } catch {
-      continue
-    }
-  }
-  return ''
+  return fetchWithCorsProxy(R_HUB_API, (d) => (d as { version?: string }).version ?? '')
 }
 
 /** Qwik framework: GitHub latest is eslint-plugin; use npm @builder.io/qwik. */
@@ -295,19 +277,7 @@ const ENDOFLIFE_PHOENIX_URL = 'https://endoflife.date/api/phoenix.json'
 
 /** Phoenix: endoflife.date blocks CORS; use proxy. */
 export async function fetchPhoenixVersion(): Promise<string> {
-  const encoded = encodeURIComponent(ENDOFLIFE_PHOENIX_URL)
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(proxy + encoded)
-      if (!res.ok) continue
-      const data = (await res.json()) as { latest: string }[]
-      const v = data[0]?.latest ?? ''
-      if (v) return v
-    } catch {
-      continue
-    }
-  }
-  return ''
+  return fetchWithCorsProxy(ENDOFLIFE_PHOENIX_URL, (d) => (d as { latest: string }[])[0]?.latest ?? '')
 }
 
 /** Alpine.js: npm registry. */
@@ -378,17 +348,9 @@ export async function fetchTalosVersion(): Promise<string> {
 
 /** GitLab Runner is on GitLab.com, not GitHub; uses CORS proxy. */
 export async function fetchGitlabRunnerVersion(): Promise<string> {
-  const encoded = encodeURIComponent(GITLAB_RUNNER_API)
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(proxy + encoded)
-      if (!res.ok) continue
-      const data = (await res.json()) as { tag_name?: string }[]
-      const tag = data[0]?.tag_name ?? ''
-      if (tag) return normalizeTag(tag)
-    } catch {
-      continue
-    }
-  }
-  return ''
+  const tag = await fetchWithCorsProxy(
+    GITLAB_RUNNER_API,
+    (d) => (d as { tag_name?: string }[])[0]?.tag_name ?? ''
+  )
+  return tag ? normalizeTag(tag) : ''
 }
