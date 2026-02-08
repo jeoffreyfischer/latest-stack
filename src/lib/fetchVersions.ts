@@ -40,7 +40,12 @@ export async function fetchAllVersions(
   stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]
 ): Promise<Map<string, string>> {
   const cached = loadCache()
-  if (cached && hasValidVersions(cached)) {
+  const stackIds = new Set(stacks.map((s) => s.id))
+  const cacheHasAllStacks =
+    cached &&
+    stackIds.size > 0 &&
+    [...stackIds].every((id) => cached.has(id))
+  if (cached && hasValidVersions(cached) && cacheHasAllStacks) {
     return cached
   }
 
