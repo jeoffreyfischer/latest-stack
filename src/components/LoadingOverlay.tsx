@@ -21,6 +21,9 @@ export function LoadingOverlay({ show }: LoadingOverlayProps) {
           <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
             Fetching latest versions…
           </p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            The first load is the longest and always takes a few seconds.
+          </p>
         </div>
       </div>
     </>
