@@ -82,7 +82,11 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
           <button
             type="button"
             onClick={handleStarClick}
-            className="cursor-pointer rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-amber-500 dark:hover:bg-slate-700 dark:hover:text-amber-400"
+            className={`cursor-pointer rounded p-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-700 ${
+              stack.isFavorite
+                ? 'text-amber-500 dark:text-amber-400'
+                : 'text-slate-400 hover:text-amber-500 dark:hover:text-amber-400'
+            }`}
             aria-label={stack.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
             {stack.isFavorite ? (

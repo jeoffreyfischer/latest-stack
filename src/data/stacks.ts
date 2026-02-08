@@ -511,15 +511,19 @@ export const CATEGORY_LABELS: Record<string, string> = {
   testing: 'Testing & QA',
 }
 
+/**
+ * Category colors based on the most popular stack's brand color in each category.
+ * Consecutive categories (by display order) use distinct hues to avoid visual clash.
+ */
 export const CATEGORY_COLORS: Record<string, string> = {
   favorites: 'border-amber-500/40 bg-amber-500/10',
-  language: 'border-amber-500/30 bg-amber-500/5',
-  frontend: 'border-blue-500/30 bg-blue-500/5',
-  backend: 'border-emerald-500/30 bg-emerald-500/5',
-  devops: 'border-purple-500/30 bg-purple-500/5',
-  mobile: 'border-pink-500/30 bg-pink-500/5',
-  tooling: 'border-slate-500/30 bg-slate-500/5',
-  database: 'border-teal-500/30 bg-teal-500/5',
-  cloud: 'border-orange-500/30 bg-orange-500/5',
-  testing: 'border-cyan-500/30 bg-cyan-500/5',
+  language: 'border-green-500/30 bg-green-500/5',       // Node.js
+  frontend: 'border-cyan-400/30 bg-cyan-400/5',        // React
+  backend: 'border-red-600/30 bg-red-600/5',           // NestJS
+  tooling: 'border-violet-500/30 bg-violet-500/5',      // Vite
+  database: 'border-emerald-600/30 bg-emerald-600/5', // MongoDB
+  testing: 'border-red-500/30 bg-red-500/5',           // Jest
+  devops: 'border-blue-600/30 bg-blue-600/5',          // Docker
+  mobile: 'border-fuchsia-500/30 bg-fuchsia-500/5',   // Flutter alt (avoids blue next to devops)
+  cloud: 'border-orange-500/30 bg-orange-500/5',       // AWS
 }
