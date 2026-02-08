@@ -18,4 +18,6 @@ export interface Stack {
   url: string
   isFavorite: boolean
   githubRepo?: { owner: string; repo: string }
+  /** Simple Icons slug for CDN logo (cdn.jsdelivr.net/npm/simple-icons) */
+  iconSlug?: string
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Stack } from '../types/stack'
 
 interface StackCardProps {
@@ -5,7 +6,13 @@ interface StackCardProps {
   onToggleFavorite: (id: string) => void
 }
 
+const LOGO_CDN = 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons'
+
 export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
+  const [logoError, setLogoError] = useState(false)
+  const logoUrl = stack.iconSlug ? `${LOGO_CDN}/${stack.iconSlug}.svg` : null
+  const showLogo = logoUrl && !logoError
+
   const handleCardClick = () => {
     window.open(stack.url, '_blank', 'noopener,noreferrer')
   }
@@ -36,8 +43,19 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-1 items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-lg font-semibold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
-            {stack.name.charAt(0)}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-700">
+            {showLogo ? (
+              <img
+                src={logoUrl}
+                alt=""
+                className="h-6 w-6 object-contain"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className="text-lg font-semibold text-slate-600 dark:text-slate-300">
+                {stack.name.charAt(0)}
+              </span>
+            )}
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="truncate font-semibold text-slate-900 dark:text-slate-100">

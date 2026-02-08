@@ -8,6 +8,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://nodejs.org',
     githubRepo: { owner: 'nodejs', repo: 'node' },
+    iconSlug: 'nodedotjs',
   },
   {
     id: '2',
@@ -16,6 +17,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://typescriptlang.org',
     githubRepo: { owner: 'microsoft', repo: 'TypeScript' },
+    iconSlug: 'typescript',
   },
   {
     id: '3',
@@ -24,6 +26,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://python.org',
     githubRepo: { owner: 'python', repo: 'cpython' },
+    iconSlug: 'python',
   },
   {
     id: '4',
@@ -32,6 +35,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://rust-lang.org',
     githubRepo: { owner: 'rust-lang', repo: 'rust' },
+    iconSlug: 'rust',
   },
   {
     id: '22',
@@ -40,6 +44,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://go.dev',
     githubRepo: { owner: 'golang', repo: 'go' },
+    iconSlug: 'go',
   },
   {
     id: '23',
@@ -48,6 +53,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://openjdk.org',
     githubRepo: { owner: 'openjdk', repo: 'jdk' },
+    iconSlug: 'java',
   },
   {
     id: '24',
@@ -56,6 +62,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://dotnet.microsoft.com',
     githubRepo: { owner: 'dotnet', repo: 'runtime' },
+    iconSlug: 'csharp',
   },
   {
     id: '25',
@@ -64,6 +71,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://ruby-lang.org',
     githubRepo: { owner: 'ruby', repo: 'ruby' },
+    iconSlug: 'ruby',
   },
   {
     id: '26',
@@ -72,6 +80,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://php.net',
     githubRepo: { owner: 'php', repo: 'php-src' },
+    iconSlug: 'php',
   },
   {
     id: '5',
@@ -80,6 +89,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://react.dev',
     githubRepo: { owner: 'facebook', repo: 'react' },
+    iconSlug: 'react',
   },
   {
     id: '6',
@@ -88,6 +98,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://vuejs.org',
     githubRepo: { owner: 'vuejs', repo: 'core' },
+    iconSlug: 'vuedotjs',
   },
   {
     id: '7',
@@ -96,6 +107,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://svelte.dev',
     githubRepo: { owner: 'sveltejs', repo: 'svelte' },
+    iconSlug: 'svelte',
   },
   {
     id: '8',
@@ -104,6 +116,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://angular.dev',
     githubRepo: { owner: 'angular', repo: 'angular' },
+    iconSlug: 'angular',
   },
   {
     id: '28',
@@ -112,6 +125,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://nextjs.org',
     githubRepo: { owner: 'vercel', repo: 'next.js' },
+    iconSlug: 'nextdotjs',
   },
   {
     id: '29',
@@ -120,6 +134,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://nuxt.com',
     githubRepo: { owner: 'nuxt', repo: 'nuxt' },
+    iconSlug: 'nuxtdotjs',
   },
   {
     id: '30',
@@ -128,6 +143,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://solidjs.com',
     githubRepo: { owner: 'solidjs', repo: 'solid' },
+    iconSlug: 'solid',
   },
   {
     id: '9',
@@ -136,6 +152,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://expressjs.com',
     githubRepo: { owner: 'expressjs', repo: 'express' },
+    iconSlug: 'express',
   },
   {
     id: '10',
@@ -144,6 +161,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://fastapi.tiangolo.com',
     githubRepo: { owner: 'tiangolo', repo: 'fastapi' },
+    iconSlug: 'fastapi',
   },
   {
     id: '11',
@@ -152,6 +170,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://djangoproject.com',
     githubRepo: { owner: 'django', repo: 'django' },
+    iconSlug: 'django',
   },
   {
     id: '27',
@@ -160,6 +179,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://dotnet.microsoft.com',
     githubRepo: { owner: 'dotnet', repo: 'runtime' },
+    iconSlug: 'dotnet',
   },
   {
     id: '31',
@@ -168,6 +188,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://flask.palletsprojects.com',
     githubRepo: { owner: 'pallets', repo: 'flask' },
+    iconSlug: 'flask',
   },
   {
     id: '32',
@@ -176,6 +197,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://nestjs.com',
     githubRepo: { owner: 'nestjs', repo: 'nest' },
+    iconSlug: 'nestjs',
   },
   {
     id: '33',
@@ -184,6 +206,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://rubyonrails.org',
     githubRepo: { owner: 'rails', repo: 'rails' },
+    iconSlug: 'rubyonrails',
   },
   {
     id: '34',
@@ -192,6 +215,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://spring.io/projects/spring-boot',
     githubRepo: { owner: 'spring-projects', repo: 'spring-boot' },
+    iconSlug: 'springboot',
   },
   {
     id: '12',
@@ -200,6 +224,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://docker.com',
     githubRepo: { owner: 'moby', repo: 'moby' },
+    iconSlug: 'docker',
   },
   {
     id: '13',
@@ -208,6 +233,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://kubernetes.io',
     githubRepo: { owner: 'kubernetes', repo: 'kubernetes' },
+    iconSlug: 'kubernetes',
   },
   {
     id: '35',
@@ -216,6 +242,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://terraform.io',
     githubRepo: { owner: 'hashicorp', repo: 'terraform' },
+    iconSlug: 'terraform',
   },
   {
     id: '36',
@@ -224,6 +251,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://ansible.com',
     githubRepo: { owner: 'ansible', repo: 'ansible' },
+    iconSlug: 'ansible',
   },
   {
     id: '37',
@@ -232,6 +260,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://helm.sh',
     githubRepo: { owner: 'helm', repo: 'helm' },
+    iconSlug: 'helm',
   },
   {
     id: '14',
@@ -240,6 +269,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://reactnative.dev',
     githubRepo: { owner: 'facebook', repo: 'react-native' },
+    iconSlug: 'react',
   },
   {
     id: '15',
@@ -248,6 +278,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://flutter.dev',
     githubRepo: { owner: 'flutter', repo: 'flutter' },
+    iconSlug: 'flutter',
   },
   {
     id: '38',
@@ -256,6 +287,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://developer.apple.com/xcode/swiftui',
     githubRepo: { owner: 'apple', repo: 'swift' },
+    iconSlug: 'swift',
   },
   {
     id: '39',
@@ -264,6 +296,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://developer.android.com/jetpack/compose',
     githubRepo: { owner: 'androidx', repo: 'compose-compiler' },
+    iconSlug: 'kotlin',
   },
   {
     id: '16',
@@ -272,6 +305,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://code.visualstudio.com',
     githubRepo: { owner: 'microsoft', repo: 'vscode' },
+    iconSlug: 'visualstudiocode',
   },
   {
     id: '17',
@@ -280,6 +314,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://eslint.org',
     githubRepo: { owner: 'eslint', repo: 'eslint' },
+    iconSlug: 'eslint',
   },
   {
     id: '18',
@@ -288,6 +323,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://vite.dev',
     githubRepo: { owner: 'vitejs', repo: 'vite' },
+    iconSlug: 'vite',
   },
   {
     id: '19',
@@ -296,6 +332,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://prettier.io',
     githubRepo: { owner: 'prettier', repo: 'prettier' },
+    iconSlug: 'prettier',
   },
   {
     id: '20',
@@ -304,6 +341,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://webpack.js.org',
     githubRepo: { owner: 'webpack', repo: 'webpack' },
+    iconSlug: 'webpack',
   },
   {
     id: '21',
@@ -312,6 +350,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://github.com/features/actions',
     githubRepo: { owner: 'actions', repo: 'runner' },
+    iconSlug: 'githubactions',
   },
   {
     id: '40',
@@ -320,6 +359,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://bun.sh',
     githubRepo: { owner: 'oven-sh', repo: 'bun' },
+    iconSlug: 'bun',
   },
   {
     id: '41',
@@ -328,6 +368,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://rollupjs.org',
     githubRepo: { owner: 'rollup', repo: 'rollup' },
+    iconSlug: 'rollup',
   },
   {
     id: '42',
@@ -336,6 +377,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://nx.dev',
     githubRepo: { owner: 'nrwl', repo: 'nx' },
+    iconSlug: 'nx',
   },
   {
     id: '43',
@@ -344,6 +386,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://postgresql.org',
     githubRepo: { owner: 'postgres', repo: 'postgres' },
+    iconSlug: 'postgresql',
   },
   {
     id: '44',
@@ -352,6 +395,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://mongodb.com',
     githubRepo: { owner: 'mongodb', repo: 'mongo' },
+    iconSlug: 'mongodb',
   },
   {
     id: '45',
@@ -360,6 +404,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://mysql.com',
     githubRepo: { owner: 'mysql', repo: 'mysql-server' },
+    iconSlug: 'mysql',
   },
   {
     id: '46',
@@ -368,6 +413,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://redis.io',
     githubRepo: { owner: 'redis', repo: 'redis' },
+    iconSlug: 'redis',
   },
   {
     id: '47',
@@ -376,6 +422,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://firebase.google.com',
     githubRepo: { owner: 'firebase', repo: 'firebase-js-sdk' },
+    iconSlug: 'firebase',
   },
   {
     id: '48',
@@ -384,6 +431,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://aws.amazon.com',
     githubRepo: { owner: 'aws', repo: 'aws-cli' },
+    iconSlug: 'amazonaws',
   },
   {
     id: '49',
@@ -392,6 +440,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://cloud.google.com',
     githubRepo: { owner: 'GoogleCloudPlatform', repo: 'gcloud-cli' },
+    iconSlug: 'googlecloud',
   },
   {
     id: '50',
@@ -400,6 +449,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://azure.microsoft.com',
     githubRepo: { owner: 'Azure', repo: 'azure-cli' },
+    iconSlug: 'microsoftazure',
   },
   {
     id: '51',
@@ -408,6 +458,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://workers.cloudflare.com',
     githubRepo: { owner: 'cloudflare', repo: 'workerd' },
+    iconSlug: 'cloudflareworkers',
   },
   {
     id: '52',
@@ -416,6 +467,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://jestjs.io',
     githubRepo: { owner: 'jestjs', repo: 'jest' },
+    iconSlug: 'jest',
   },
   {
     id: '53',
@@ -424,6 +476,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://playwright.dev',
     githubRepo: { owner: 'microsoft', repo: 'playwright' },
+    iconSlug: 'playwright',
   },
   {
     id: '54',
@@ -432,6 +485,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://cypress.io',
     githubRepo: { owner: 'cypress-io', repo: 'cypress' },
+    iconSlug: 'cypress',
   },
   {
     id: '55',
@@ -440,6 +494,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://pytest.org',
     githubRepo: { owner: 'pytest-dev', repo: 'pytest' },
+    iconSlug: 'pytest',
   },
 ]
 
