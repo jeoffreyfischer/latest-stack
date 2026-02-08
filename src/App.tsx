@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { StackSection } from './components/StackSection'
+import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
 import { STACK_DEFINITIONS } from './data/stacks'
 import { fetchAllVersions } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
@@ -39,6 +40,8 @@ export default function App() {
   const [versions, setVersions] = useState<Map<string, string>>(new Map())
   const [isLoading, setIsLoading] = useState(true)
   const [theme, setTheme] = useState<'light' | 'dark'>(loadTheme)
+  const [expandAll, setExpandAll] = useState(false)
+  const initialCount = useInitialVisibleCount()
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark')
@@ -98,6 +101,10 @@ export default function App() {
       }))
   }, [stacks])
 
+  const anySectionHasMore =
+    (favoriteStacks.length > 0 && favoriteStacks.length > initialCount) ||
+    stacksByCategory.some(({ stacks: s }) => s.length > initialCount)
+
   return (
     <div className="min-h-screen bg-slate-50 bg-mesh dark:bg-slate-900">
       <header className="relative border-b border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-10 dark:border-slate-700/50 dark:bg-slate-950/90 sm:px-6 lg:px-8">
@@ -132,6 +139,17 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+        {!isLoading && anySectionHasMore && (
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={() => setExpandAll((e) => !e)}
+              className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+            >
+              {expandAll ? 'Collapse all' : 'Expand all'}
+            </button>
+          </div>
+        )}
         {isLoading && (
           <p className="flex items-center justify-center gap-2 text-center text-sm text-slate-500 dark:text-slate-400">
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
@@ -154,6 +172,8 @@ export default function App() {
             category="favorites"
             stacks={favoriteStacks}
             onToggleFavorite={toggleFavorite}
+            expandAll={expandAll}
+            initialCount={initialCount}
           />
         )}
 
@@ -163,6 +183,8 @@ export default function App() {
             category={category}
             stacks={categoryStacks}
             onToggleFavorite={toggleFavorite}
+            expandAll={expandAll}
+            initialCount={initialCount}
           />
         ))}
       </main>
