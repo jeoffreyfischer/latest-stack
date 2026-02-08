@@ -5,6 +5,17 @@ import { fetchAllVersions } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
 const FAVORITES_KEY = 'latest-stack-favorites'
+const THEME_KEY = 'latest-stack-theme'
+
+function loadTheme(): 'light' | 'dark' {
+  try {
+    const stored = localStorage.getItem(THEME_KEY)
+    if (stored === 'dark' || stored === 'light') return stored
+  } catch {
+    // ignore
+  }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
 function loadFavorites(): Set<string> {
   try {
@@ -27,6 +38,12 @@ export default function App() {
   const [favorites, setFavorites] = useState<Set<string>>(loadFavorites)
   const [versions, setVersions] = useState<Map<string, string>>(new Map())
   const [isLoading, setIsLoading] = useState(true)
+  const [theme, setTheme] = useState<'light' | 'dark'>(loadTheme)
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    localStorage.setItem(THEME_KEY, theme)
+  }, [theme])
 
   useEffect(() => {
     fetchAllVersions(STACK_DEFINITIONS)
@@ -84,13 +101,27 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <header className="border-b border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-950 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
-            Latest Stack
-          </h1>
-          <p className="mt-1 text-slate-600 dark:text-slate-400">
-            Track the latest versions of popular developer tools and frameworks
-          </p>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
+              Latest Stack
+            </h1>
+            <p className="mt-1 text-slate-600 dark:text-slate-400">
+              Track the latest versions of popular developer tools and frameworks
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+            className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? (
+              <SunIcon />
+            ) : (
+              <MoonIcon />
+            )}
+          </button>
         </div>
       </header>
 
@@ -129,5 +160,21 @@ export default function App() {
         ))}
       </main>
     </div>
+  )
+}
+
+function SunIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+    </svg>
   )
 }
