@@ -15,6 +15,8 @@
 
 **CORS:** Some APIs (endoflife.date, adoptium) block browser requests. Use `fetchWithCorsProxy` with fallback proxies.
 
+**Protocols & Standards:** The `protocols` category (HTTP, TLS, OAuth/OpenID Connect, JSON Schema) uses custom fetchers. Some return static versions (HTTP→3, TLS→1.3, OAuth→2.1) when no public API exists; JSON Schema uses `fetchNpmVersion('json-schema')`.
+
 ### Do
 - Use React 19 with functional components and hooks (e.g. `useState`).
 - Prefer `rem`, `em`, or viewport units (`vw`, `vh`, `vmin`, `vmax`) for measurements; use `px` only as a last resort.
@@ -64,7 +66,7 @@ npm run preview
 - **Entry:** `index.html` → loads `src/main.tsx` → mounts `App` into `#root`
 - **Main UI:** `src/App.tsx` – stack version dashboard with category sections, favorites, theme toggle
 - **Components:** `src/components/` – StackCard, StackSection, LoadingOverlay, icons
-- **Data:** `src/data/stacks.ts` – STACK_DEFINITIONS, CATEGORY_ORDER, CATEGORY_LABELS, CATEGORY_COLORS
+- **Data:** `src/data/stacks.ts` – STACK_DEFINITIONS, CATEGORY_ORDER, CATEGORY_LABELS, CATEGORY_COLORS (categories include language, frontend, backend, protocols, etc.)
 - **Version fetching:** `src/lib/fetchVersion.ts` (fetchers), `src/lib/fetchVersions.ts` (orchestration, VERSION_FETCHERS map)
 - **Hooks:** `src/hooks/` – useTheme, useFavorites, useInitialVisibleCount
 - **Types:** `src/types/stack.ts` – Stack, StackCategory
@@ -113,6 +115,7 @@ App
 **Adding a new stack:**
 1. Add entry to `STACK_DEFINITIONS` in `stacks.ts` (id, name, category, url, iconSlug, githubRepo/versionSource/versionUrl)
 2. If custom version source: add fetcher in `fetchVersion.ts` and entry in `VERSION_FETCHERS` in `fetchVersions.ts` + add to `versionSource` union in `stack.ts`
+3. For protocols/standards with no public API: fetcher can return a static version (e.g. `return '1.3'` for TLS)
 
 ### Stack cards
 - `StackCard` uses stretched-link pattern: anchor covers whole card; content has `pointer-events-none`; tag icon and star have `pointer-events-auto` so they stay clickable.
