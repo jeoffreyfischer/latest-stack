@@ -15,7 +15,8 @@ export interface Stack {
   id: string
   name: string
   category: StackCategory
-  logo: string
+  /** @deprecated Use iconSlug for Simple Icons CDN. Kept for backwards compat. */
+  logo?: string
   latestVersion: string
   url: string
   isFavorite: boolean
