@@ -3,58 +3,25 @@ import { StackSection } from './components/StackSection'
 import { LoadingOverlay } from './components/LoadingOverlay'
 import { GitHubIcon, SunIcon, MoonIcon } from './components/icons'
 import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
+import { useTheme } from './hooks/useTheme'
+import { useFavorites } from './hooks/useFavorites'
 import { STACK_DEFINITIONS } from './data/stacks'
 import { fetchAllVersions, getInitialVersionState } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
-const FAVORITES_KEY = 'latest-stack-favorites'
-const THEME_KEY = 'latest-stack-theme'
-
-function loadTheme(): 'light' | 'dark' {
-  try {
-    const stored = localStorage.getItem(THEME_KEY)
-    if (stored === 'dark' || stored === 'light') return stored
-  } catch {
-    // ignore
-  }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-function loadFavorites(): Set<string> {
-  try {
-    const stored = localStorage.getItem(FAVORITES_KEY)
-    if (stored) {
-      const parsed = JSON.parse(stored) as string[]
-      return new Set(parsed)
-    }
-  } catch {
-    // ignore
-  }
-  return new Set()
-}
-
-function saveFavorites(favorites: Set<string>) {
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]))
-}
-
 const initialVersionState = getInitialVersionState()
 
 export default function App() {
-  const [favorites, setFavorites] = useState<Set<string>>(loadFavorites)
+  const [theme, setTheme] = useTheme()
+  const { favorites, toggleFavorite, clearAllFavorites } = useFavorites()
   const [versions, setVersions] = useState<Map<string, string>>(
     () => initialVersionState.versions
   )
   const [isLoading, setIsLoading] = useState(
     () => initialVersionState.isLoading
   )
-  const [theme, setTheme] = useState<'light' | 'dark'>(loadTheme)
   const [expandAll, setExpandAll] = useState(false)
   const initialCount = useInitialVisibleCount()
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark')
-    localStorage.setItem(THEME_KEY, theme)
-  }, [theme])
 
   useEffect(() => {
     fetchAllVersions(STACK_DEFINITIONS, setVersions)
@@ -69,24 +36,6 @@ export default function App() {
       isFavorite: favorites.has(def.id),
     }))
   }, [versions, favorites])
-
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
-      }
-      saveFavorites(next)
-      return next
-    })
-  }
-
-  const clearAllFavorites = () => {
-    setFavorites(new Set())
-    saveFavorites(new Set())
-  }
 
   const favoriteStacks = useMemo(
     () =>
@@ -154,7 +103,7 @@ export default function App() {
           </a>
           <button
             type="button"
-            onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="rounded-xl border border-slate-200/60 bg-white/60 p-2.5 text-slate-500 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
