@@ -188,13 +188,6 @@ export default function App() {
             )}
           </div>
         )}
-        {isLoading && (
-          <p className="flex items-center justify-center gap-2 text-center text-sm text-slate-500 dark:text-slate-400">
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
-            Fetching latest versions…
-          </p>
-        )}
-
         {!isLoading && versions.size === 0 && (
           <p className="text-center text-sm text-amber-600 dark:text-amber-400">
             Could not fetch versions (GitHub API rate limit?). Add{' '}
@@ -205,26 +198,47 @@ export default function App() {
           </p>
         )}
 
-        {favoriteStacks.length > 0 && (
-          <StackSection
-            category="favorites"
-            stacks={favoriteStacks}
-            onToggleFavorite={toggleFavorite}
-            expandAll={expandAll}
-            initialCount={initialCount}
-          />
-        )}
-
-        {stacksByCategory.map(({ category, stacks: categoryStacks }) => (
-          <StackSection
-            key={category}
-            category={category}
-            stacks={categoryStacks}
-            onToggleFavorite={toggleFavorite}
-            expandAll={expandAll}
-            initialCount={initialCount}
-          />
-        ))}
+        <div className="relative space-y-8">
+          {isLoading && (
+            <>
+              <div
+                className="absolute inset-0 z-10 bg-slate-50/80 backdrop-blur-sm dark:bg-slate-900/80"
+                aria-hidden="true"
+              />
+              <div
+                className="fixed inset-0 z-20 flex items-center justify-center"
+                aria-live="polite"
+                aria-busy="true"
+              >
+                <div className="flex flex-col items-center gap-6 rounded-2xl bg-white px-12 py-10 shadow-xl dark:bg-slate-800">
+                  <span className="h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500 dark:border-slate-600 dark:border-t-emerald-400" />
+                  <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                    Fetching latest versions…
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+          {favoriteStacks.length > 0 && (
+            <StackSection
+              category="favorites"
+              stacks={favoriteStacks}
+              onToggleFavorite={toggleFavorite}
+              expandAll={expandAll}
+              initialCount={initialCount}
+            />
+          )}
+          {stacksByCategory.map(({ category, stacks: categoryStacks }) => (
+            <StackSection
+              key={category}
+              category={category}
+              stacks={categoryStacks}
+              onToggleFavorite={toggleFavorite}
+              expandAll={expandAll}
+              initialCount={initialCount}
+            />
+          ))}
+        </div>
       </main>
 
       <footer className="mt-16 border-t border-slate-200/80 bg-white/50 px-4 py-8 dark:border-slate-700/50 dark:bg-slate-950/50 sm:px-6 lg:px-8">
