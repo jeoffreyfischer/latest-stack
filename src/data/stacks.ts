@@ -84,7 +84,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     logo: '/placeholder.svg',
     url: 'https://php.net',
     versionSource: 'php',
-    versionUrl: 'https://php.watch/versions',
+    versionUrl: 'https://endoflife.date/php',
     iconSlug: 'php',
   },
   {

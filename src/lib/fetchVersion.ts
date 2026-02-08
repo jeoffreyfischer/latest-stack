@@ -13,8 +13,9 @@ if (token) {
 
 const GCP_COMPONENTS_URL = 'https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json'
 const CORS_PROXIES = [
-  'https://api.allorigins.win/raw?url=',
   'https://corsproxy.io/?url=',
+  'https://api.cors.lol/?url=',
+  'https://api.allorigins.win/raw?url=',
 ]
 
 export async function fetchGcpVersion(): Promise<string> {
@@ -126,18 +127,7 @@ export async function fetchRubyVersion(): Promise<string> {
 }
 
 export async function fetchPhpVersion(): Promise<string> {
-  try {
-    const res = await fetch('https://php.watch/api/v1/versions')
-    if (!res.ok) return ''
-    const body = (await res.json()) as {
-      data?: Record<string, { name: string; isLatestVersion?: boolean }>
-    }
-    const data = body.data ?? {}
-    const latest = Object.values(data).find((v) => v.isLatestVersion)
-    return latest?.name ?? ''
-  } catch {
-    return ''
-  }
+  return fetchEndoflifeVersion('php')
 }
 
 /** AWS CLI has no GitHub Releases; uses tags instead. */
