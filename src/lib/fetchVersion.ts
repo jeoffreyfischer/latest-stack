@@ -4,10 +4,17 @@ function normalizeTag(tag: string): string {
     .replace(/^v/, '')          // standard: "v1.2.3" → "1.2.3"
 }
 
+const headers: HeadersInit = {}
+const token = (import.meta as { env?: { VITE_GITHUB_TOKEN?: string } }).env?.VITE_GITHUB_TOKEN
+if (token) {
+  headers.Authorization = `Bearer ${token}`
+}
+
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
+      { headers }
     )
     if (res.ok) {
       const data = (await res.json()) as { tag_name: string }
@@ -17,7 +24,8 @@ export async function fetchVersion(owner: string, repo: string): Promise<string>
     // Fallback: some repos use tags but not GitHub Releases (404)
     if (res.status === 404) {
       const tagsRes = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`
+        `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`,
+        { headers }
       )
       if (!tagsRes.ok) return ''
       const tags = (await tagsRes.json()) as { name: string }[]

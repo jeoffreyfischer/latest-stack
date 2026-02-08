@@ -93,6 +93,16 @@ export default function App() {
           </p>
         )}
 
+        {!isLoading && versions.size === 0 && (
+          <p className="text-center text-sm text-amber-600 dark:text-amber-400">
+            Could not fetch versions (GitHub API rate limit?). Add{' '}
+            <code className="rounded bg-slate-200 px-1 dark:bg-slate-700">
+              VITE_GITHUB_TOKEN
+            </code>{' '}
+            to .env or try again later.
+          </p>
+        )}
+
         {favoriteStacks.length > 0 && (
           <StackSection
             category="favorites"
