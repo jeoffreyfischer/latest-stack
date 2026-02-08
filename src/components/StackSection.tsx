@@ -21,7 +21,7 @@ export function StackSection({ category, stacks, onToggleFavorite }: StackSectio
   const hasMore = stacks.length > initialCount
 
   return (
-    <section className={`rounded-xl border p-4 ${colorClass}`}>
+    <section className={`rounded-xl border p-5 shadow-sm transition-shadow hover:shadow-md ${colorClass}`}>
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
         {label}
       </h2>
@@ -35,7 +35,7 @@ export function StackSection({ category, stacks, onToggleFavorite }: StackSectio
         <button
           type="button"
           onClick={() => setExpanded((e) => !e)}
-          className="w-fit cursor-pointer rounded-lg border border-slate-200 bg-white px-6 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+          className="w-fit cursor-pointer rounded-lg border border-slate-200 bg-white px-6 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
         >
           {expanded ? 'See less' : `See more (${stacks.length - initialCount} more)`}
         </button>

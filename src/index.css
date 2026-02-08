@@ -7,3 +7,23 @@ a[href],
 [role="button"] {
   cursor: pointer;
 }
+
+/* Gradient text utility */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 dark:from-slate-100 dark:via-slate-200 dark:to-slate-100;
+}
+
+/* Subtle background pattern */
+.bg-mesh {
+  background-image:
+    radial-gradient(at 40% 20%, rgb(148 163 184 / 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgb(99 102 241 / 0.06) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgb(34 197 94 / 0.05) 0px, transparent 50%);
+}
+
+.dark .bg-mesh {
+  background-image:
+    radial-gradient(at 40% 20%, rgb(148 163 184 / 0.06) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgb(99 102 241 / 0.06) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgb(34 197 94 / 0.04) 0px, transparent 50%);
+}

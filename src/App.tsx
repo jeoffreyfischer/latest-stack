@@ -99,15 +99,19 @@ export default function App() {
   }, [stacks])
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <header className="relative border-b border-slate-200 bg-white px-4 py-10 dark:border-slate-800 dark:bg-slate-950 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 bg-mesh dark:bg-slate-900">
+      <header className="relative border-b border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-10 dark:border-slate-700/50 dark:bg-slate-950/90 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl lg:text-5xl">
-            Latest Stack versions. One Dashboard. Instantly.
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              <span className="text-gradient">Latest Stack versions.</span>
+              <br />
+              <span className="mt-1 inline-block bg-gradient-to-r from-emerald-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-cyan-400 dark:to-violet-400">
+                One Dashboard. Instantly.
+              </span>
             </h1>
-            <p className="mt-3 max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
-            Stay ahead of the curve with the most up-to-date versions of programming languages, frontend & backend frameworks, mobile platforms, DevOps tools, and developer utilities - all pulled automatically from official sources.
+            <p className="mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+              Stay ahead of the curve with the most up-to-date versions of programming languages, frontend & backend frameworks, mobile platforms, DevOps tools, and developer utilities — all pulled automatically from official sources.
             </p>
           </div>
         </div>
@@ -115,7 +119,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-            className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            className="rounded-xl border border-slate-200/60 bg-white/60 p-2.5 text-slate-500 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
@@ -129,7 +133,8 @@ export default function App() {
 
       <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         {isLoading && (
-          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+          <p className="flex items-center justify-center gap-2 text-center text-sm text-slate-500 dark:text-slate-400">
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
             Fetching latest versions…
           </p>
         )}
