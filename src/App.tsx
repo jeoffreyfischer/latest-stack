@@ -49,7 +49,7 @@ export default function App() {
   }, [theme])
 
   useEffect(() => {
-    fetchAllVersions(STACK_DEFINITIONS)
+    fetchAllVersions(STACK_DEFINITIONS, setVersions)
       .then(setVersions)
       .finally(() => setIsLoading(false))
   }, [])
