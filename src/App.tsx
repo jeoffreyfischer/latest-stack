@@ -219,6 +219,17 @@ export default function App() {
           />
         ))}
       </main>
+
+      <footer className="mt-16 border-t border-slate-200/80 bg-white/50 px-4 py-8 dark:border-slate-700/50 dark:bg-slate-950/50 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col items-center gap-6 text-center text-sm text-slate-500 dark:text-slate-400">
+            <p className="max-w-xl">
+              Versions are fetched from GitHub Releases, endoflife.date, registries, and official APIs.
+            </p>
+            <p>© {new Date().getFullYear()} Latest Stack</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
