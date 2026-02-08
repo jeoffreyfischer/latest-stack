@@ -329,6 +329,26 @@ export async function fetchTalosVersion(): Promise<string> {
   return fetchVersion('siderolabs', 'talos')
 }
 
+/** HTTP: current major version (HTTP/3). No public API; return known version. */
+export async function fetchHttpVersion(): Promise<string> {
+  return '3'
+}
+
+/** TLS: current version (TLS 1.3). No public API; return known version. */
+export async function fetchTlsVersion(): Promise<string> {
+  return '1.3'
+}
+
+/** OAuth: current version (OAuth 2.1). No public API; return known version. */
+export async function fetchOauthVersion(): Promise<string> {
+  return '2.1'
+}
+
+/** JSON Schema: npm package version. */
+export async function fetchJsonSchemaVersion(): Promise<string> {
+  return fetchNpmVersion('json-schema')
+}
+
 /** GitLab Runner is on GitLab.com, not GitHub; uses CORS proxy. */
 export async function fetchGitlabRunnerVersion(): Promise<string> {
   const tag = await fetchWithCorsProxy(

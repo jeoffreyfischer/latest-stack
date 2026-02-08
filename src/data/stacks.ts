@@ -818,6 +818,42 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     githubRepo: { owner: 'storybookjs', repo: 'storybook' },
     iconSlug: 'storybook',
   },
+  {
+    id: '901',
+    name: 'HTTP',
+    category: 'protocols',
+    url: 'https://httpwg.org/',
+    versionSource: 'http',
+    versionUrl: 'https://httpwg.org/',
+    iconSlug: 'curl',
+  },
+  {
+    id: '902',
+    name: 'TLS',
+    category: 'protocols',
+    url: 'https://datatracker.ietf.org/wg/tls/',
+    versionSource: 'tls',
+    versionUrl: 'https://datatracker.ietf.org/wg/tls/',
+    iconSlug: 'letsencrypt',
+  },
+  {
+    id: '903',
+    name: 'OAuth / OpenID Connect',
+    category: 'protocols',
+    url: 'https://oauth.net/',
+    versionSource: 'oauth',
+    versionUrl: 'https://oauth.net/',
+    iconSlug: 'openid',
+  },
+  {
+    id: '904',
+    name: 'JSON Schema',
+    category: 'protocols',
+    url: 'https://json-schema.org/',
+    versionSource: 'json-schema',
+    versionUrl: 'https://www.npmjs.com/package/json-schema',
+    iconSlug: 'json',
+  },
 ]
 
 /** Display order for category sections (favorites is rendered separately). */
@@ -833,6 +869,7 @@ export const CATEGORY_ORDER: readonly string[] = [
   'testing',
   'devops',
   'mobile',
+  'protocols',
 ]
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -848,6 +885,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   testing: 'Testing & QA',
   devops: 'DevOps',
   mobile: 'Mobile',
+  protocols: 'Protocols & Standards',
 }
 
 /**
@@ -867,4 +905,5 @@ export const CATEGORY_COLORS: Record<string, string> = {
   testing: 'border-red-500/30 bg-red-500/5',           // Jest
   devops: 'border-blue-600/30 bg-blue-600/5',          // Docker
   mobile: 'border-fuchsia-500/30 bg-fuchsia-500/5',   // Flutter
+  protocols: 'border-slate-500/30 bg-slate-500/5',    // Standards
 }

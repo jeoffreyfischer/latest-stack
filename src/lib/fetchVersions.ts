@@ -32,6 +32,10 @@ import {
   fetchJunitVersion,
   fetchNixVersion,
   fetchTalosVersion,
+  fetchHttpVersion,
+  fetchTlsVersion,
+  fetchOauthVersion,
+  fetchJsonSchemaVersion,
 } from './fetchVersion'
 import type { Stack } from '../types/stack'
 
@@ -70,6 +74,10 @@ const VERSION_FETCHERS: Record<VersionSource, () => Promise<string>> = {
   junit: fetchJunitVersion,
   nix: fetchNixVersion,
   talos: fetchTalosVersion,
+  http: fetchHttpVersion,
+  tls: fetchTlsVersion,
+  oauth: fetchOauthVersion,
+  'json-schema': fetchJsonSchemaVersion,
 }
 
 function hasCustomVersionSource(
