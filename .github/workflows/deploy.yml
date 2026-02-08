@@ -30,6 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      # Requires VITE_GITHUB_TOKEN secret for GitHub API rate limits (60/hr without, 5000/hr with)
       - name: Build
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
