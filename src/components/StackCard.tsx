@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Stack } from '../types/stack'
-import { GitHubIcon, WorldIcon, StarIcon } from './icons'
+import { TagIcon, StarIcon } from './icons'
 
 interface StackCardProps {
   stack: Stack
@@ -33,7 +33,6 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
     : stack.githubRepo
       ? `https://github.com/${stack.githubRepo.owner}/${stack.githubRepo.repo}/releases`
       : null
-  const useWorldIcon = !!stack.versionUrl
 
   return (
     <div
@@ -87,10 +86,10 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               rel="noopener noreferrer"
               onClick={handleVersionLinkClick}
               className="cursor-pointer rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"
-              aria-label={useWorldIcon ? 'View version info' : 'View releases on GitHub'}
+              aria-label="Link to version page"
               title="Link to version page"
             >
-              {useWorldIcon ? <WorldIcon /> : <GitHubIcon />}
+              <TagIcon />
             </a>
           )}
           <button
