@@ -111,14 +111,14 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-              <span className="text-gradient">Latest Stack versions.</span>
+              <span className="text-gradient">Latest Stack versions</span>
               <br />
               <span className="mt-1 inline-block bg-gradient-to-r from-emerald-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-cyan-400 dark:to-violet-400">
                 One Dashboard. Instantly.
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
-              Stay ahead of the curve with the most up-to-date versions of programming languages, frontend & backend frameworks, mobile platforms, DevOps tools, and developer utilities — all pulled automatically from official sources.
+              Stay ahead of the curve with the most up-to-date versions of programming languages, frontend & backend frameworks, mobile platforms, DevOps tools, and developer utilities - all pulled automatically from official sources
             </p>
           </div>
         </div>
