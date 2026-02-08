@@ -28,6 +28,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
 
   return (
     <div className="group relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm transition-all duration-200 hover:border-emerald-300/50 hover:shadow-lg hover:shadow-emerald-500/5 dark:border-slate-700 dark:bg-slate-800/80 dark:hover:border-slate-600 dark:hover:shadow-slate-900/20">
+      {/* Stretched link: covers whole card; content uses pointer-events-none so clicks reach it; actions use pointer-events-auto */}
       <a
         href={stack.url}
         target="_blank"
