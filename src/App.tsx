@@ -100,16 +100,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <header className="border-b border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-950 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
-              Latest Stack
+      <header className="relative border-b border-slate-200 bg-white px-4 py-10 dark:border-slate-800 dark:bg-slate-950 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl lg:text-5xl">
+            Latest Stack versions. One Dashboard. Instantly.
             </h1>
-            <p className="mt-1 text-slate-600 dark:text-slate-400">
-              Track the latest versions of popular developer tools and frameworks
+            <p className="mt-3 max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+            Stay ahead of the curve with the most up-to-date versions of programming languages, frontend & backend frameworks, mobile platforms, DevOps tools, and developer utilities - all pulled automatically from official sources.
             </p>
           </div>
+        </div>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 sm:right-6 lg:right-8">
           <button
             type="button"
             onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
