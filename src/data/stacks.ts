@@ -173,7 +173,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
 
 export const CATEGORY_LABELS: Record<string, string> = {
   favorites: 'Favorites',
-  language: 'Languages and Runtimes',
+  language: 'Languages & Runtimes',
   frontend: 'Frontend',
   backend: 'Backend',
   devops: 'DevOps',
