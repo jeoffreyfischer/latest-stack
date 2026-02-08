@@ -111,7 +111,7 @@ export default function App() {
             </p>
           </div>
         </div>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 sm:right-6 lg:right-8">
+        <div className="absolute right-4 top-4 sm:right-6 sm:top-6 lg:right-8 lg:top-6">
           <button
             type="button"
             onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
