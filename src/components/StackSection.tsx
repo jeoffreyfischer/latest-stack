@@ -25,7 +25,7 @@ export function StackSection({ category, stacks, onToggleFavorite }: StackSectio
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
         {label}
       </h2>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {visibleStacks.map((stack) => (
           <StackCard key={stack.id} stack={stack} onToggleFavorite={onToggleFavorite} />
         ))}
