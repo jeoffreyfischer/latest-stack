@@ -1,5 +1,16 @@
-import { fetchVersion } from './fetchVersion'
+import { fetchVersion, fetchGcpVersion } from './fetchVersion'
 import type { Stack } from '../types/stack'
+
+async function fetchVersionForStack(
+  stack: Omit<Stack, 'latestVersion' | 'isFavorite'>
+): Promise<string> {
+  if (stack.versionSource === 'gcp') {
+    return fetchGcpVersion()
+  }
+  const repo = stack.versionRepo ?? stack.githubRepo
+  if (!repo) return ''
+  return fetchVersion(repo.owner, repo.repo)
+}
 
 const CACHE_KEY = 'latest-stack-versions'
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
@@ -51,9 +62,10 @@ export async function fetchAllVersions(
 
   const results = await Promise.allSettled(
     stacks.map(async (stack) => {
-      const repo = stack.githubRepo
-      if (!repo) return { id: stack.id, version: '' }
-      const version = await fetchVersion(repo.owner, repo.repo)
+      const version =
+        stack.versionSource === 'gcp' || stack.versionRepo || stack.githubRepo
+          ? await fetchVersionForStack(stack)
+          : ''
       return { id: stack.id, version }
     })
   )

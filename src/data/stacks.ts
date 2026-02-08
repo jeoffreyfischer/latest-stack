@@ -295,7 +295,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'mobile',
     logo: '/placeholder.svg',
     url: 'https://developer.android.com/jetpack/compose',
-    githubRepo: { owner: 'androidx', repo: 'compose-compiler' },
+    githubRepo: { owner: 'chrisbanes', repo: 'compose-bom' },
     iconSlug: 'kotlin',
   },
   {
@@ -439,7 +439,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'cloud',
     logo: '/placeholder.svg',
     url: 'https://cloud.google.com',
-    githubRepo: { owner: 'GoogleCloudPlatform', repo: 'gcloud-cli' },
+    versionSource: 'gcp',
     iconSlug: 'googlecloud',
   },
   {

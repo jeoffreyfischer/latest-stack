@@ -11,6 +11,33 @@ if (token) {
   headers.Authorization = `Bearer ${token}`
 }
 
+const GCP_COMPONENTS_URL = 'https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json'
+const CORS_PROXY = 'https://corsproxy.io/?url='
+
+export async function fetchGcpVersion(): Promise<string> {
+  try {
+    const url = CORS_PROXY + encodeURIComponent(GCP_COMPONENTS_URL)
+    const res = await fetch(url)
+    if (!res.ok) return ''
+    const data = (await res.json()) as {
+      components?: Array<{
+        id?: string
+        version?: { version_string?: string }
+      }>
+    }
+    const core = data.components?.find((c) => c.id === 'core')
+    const version = core?.version?.version_string ?? ''
+    if (version) return version
+    // Fallback: beta/alpha components share SDK version
+    const fallback = data.components?.find((c) =>
+      ['beta', 'alpha'].includes(c.id ?? '')
+    )
+    return fallback?.version?.version_string ?? ''
+  } catch {
+    return ''
+  }
+}
+
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
     const res = await fetch(
