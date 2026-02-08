@@ -1,5 +1,15 @@
 # AGENTS.md
 
+### Version fetching
+
+**Flow:** When adding or updating version sources for a stack:
+1. **First try GitHub** – Check if the project has GitHub Releases. Prefer Releases over tags. Use `githubRepo` and `versionRepo` when the version comes from GitHub.
+2. **If no GitHub Releases** – Search for official version info on the web (e.g. endoflife.date, project websites, package registries). Add a custom `versionSource` fetcher in `fetchVersion.ts` and set `versionUrl` to the official version/release page.
+
+**Version link icons:**
+- **GitHub icon** – When the version link points to GitHub (e.g. releases page). Use when `versionUrl` is _not_ set and `githubRepo` is used.
+- **World icon** – When the version link points to any other website. Use when `versionUrl` is set (e.g. endoflife.date, changelog, download page).
+
 ### Do
 - Use React 19 with functional components and hooks (e.g. `useState`).
 - Use Tailwind CSS for layout and utilities; keep custom CSS in `src/App.css` and `src/index.css` where needed.
