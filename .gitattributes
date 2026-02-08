@@ -1,0 +1,2 @@
+# Enforce LF line endings for consistent diffs across editors
+* text=auto eol=lf
