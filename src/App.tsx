@@ -56,7 +56,6 @@ export default function App() {
       const target = e.target as Element | null
       if (target?.closest?.(`[data-stack-id="${highlightedStackId}"]`)) return
       setHighlightedStackId(null)
-      setExpandedForSearch(new Set())
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
