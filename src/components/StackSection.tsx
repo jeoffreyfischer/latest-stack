@@ -11,6 +11,9 @@ interface StackSectionProps {
   expandAll?: boolean
   initialCount?: number
   isLoading?: boolean
+  highlightedStackId?: string | null
+  expandedForSearch?: Set<string>
+  onClearExpandedForSearch?: (category: string) => void
 }
 
 export function StackSection({
@@ -20,6 +23,9 @@ export function StackSection({
   expandAll = false,
   initialCount: initialCountProp,
   isLoading = false,
+  highlightedStackId = null,
+  expandedForSearch = new Set(),
+  onClearExpandedForSearch,
 }: StackSectionProps) {
   const [expanded, setExpanded] = useState(false)
   const internalCount = useInitialVisibleCount()
@@ -28,7 +34,8 @@ export function StackSection({
   const label = CATEGORY_LABELS[category] ?? category
   const colorClass = CATEGORY_COLORS[category] ?? 'border-slate-500/30 bg-slate-500/5'
 
-  const visibleStacks = expandAll || expanded ? stacks : stacks.slice(0, initialCount)
+  const isExpanded = expandAll || expanded || expandedForSearch.has(category)
+  const visibleStacks = isExpanded ? stacks : stacks.slice(0, initialCount)
   const hasMore = stacks.length > initialCount
   const showPerSectionToggle = hasMore && !expandAll
 
@@ -48,17 +55,25 @@ export function StackSection({
       </h2>
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [&>*]:min-w-0">
         {visibleStacks.map((stack) => (
-          <StackCard key={stack.id} stack={stack} onToggleFavorite={onToggleFavorite} />
+          <StackCard
+            key={stack.id}
+            stack={stack}
+            onToggleFavorite={onToggleFavorite}
+            isHighlighted={highlightedStackId === stack.id}
+          />
         ))}
       </div>
       {showPerSectionToggle && (
         <div className="mt-4 flex justify-center">
           <button
             type="button"
-            onClick={() => setExpanded((e) => !e)}
+            onClick={() => {
+              setExpanded((e) => !e)
+              onClearExpandedForSearch?.(category)
+            }}
             className="w-fit cursor-pointer rounded-lg border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
           >
-            {expanded ? 'See less' : `See more (${stacks.length - initialCount} more)`}
+            {isExpanded ? 'See less' : `See more (${stacks.length - initialCount} more)`}
           </button>
         </div>
       )}

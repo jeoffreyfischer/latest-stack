@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { StackSection } from './components/StackSection'
+import { SearchBar } from './components/SearchBar'
 import { GitHubIcon, SunIcon, MoonIcon } from './components/icons'
 import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
 import { useTheme } from './hooks/useTheme'
@@ -20,7 +21,44 @@ export default function App() {
     () => new Set()
   )
   const [expandAll, setExpandAll] = useState(false)
+  const [highlightedStackId, setHighlightedStackId] = useState<string | null>(null)
   const initialCount = useInitialVisibleCount()
+
+  const [scrollToStackId, setScrollToStackId] = useState<string | null>(null)
+
+  const [expandedForSearch, setExpandedForSearch] = useState<Set<string>>(new Set())
+
+  const handleSearchSelect = useCallback((stack: Stack) => {
+    setExpandedForSearch(
+      stack.isFavorite ? new Set(['favorites', stack.category]) : new Set([stack.category])
+    )
+    setHighlightedStackId(stack.id)
+    setScrollToStackId(stack.id)
+  }, [])
+
+  useEffect(() => {
+    if (!scrollToStackId) return
+    const timer = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.querySelector(`[data-stack-id="${scrollToStackId}"]`)
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setScrollToStackId(null)
+      })
+    })
+    return () => cancelAnimationFrame(timer)
+  }, [scrollToStackId])
+
+  useEffect(() => {
+    if (!highlightedStackId) return
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as Element | null
+      if (target?.closest?.(`[data-stack-id="${highlightedStackId}"]`)) return
+      setHighlightedStackId(null)
+      setExpandedForSearch(new Set())
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [highlightedStackId])
 
   useEffect(() => {
     async function loadByCategory() {
@@ -109,6 +147,9 @@ export default function App() {
             <p className="mt-6 max-w-xl text-base text-gray-600 dark:text-gray-400 sm:text-lg">
               One hub to view them all
             </p>
+            <div className="mt-6 flex justify-center">
+              <SearchBar stacks={stacks} onSelect={handleSearchSelect} />
+            </div>
           </div>
         </div>
         <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6 lg:right-8 lg:top-6">
@@ -177,6 +218,9 @@ export default function App() {
               onToggleFavorite={toggleFavorite}
               expandAll={expandAll}
               initialCount={initialCount}
+              highlightedStackId={highlightedStackId}
+              expandedForSearch={expandedForSearch}
+              onClearExpandedForSearch={(c) => setExpandedForSearch((prev) => { const next = new Set(prev); next.delete(c); return next; })}
             />
           )}
           {stacksByCategory.map(({ category, stacks: categoryStacks }) => (
@@ -188,6 +232,9 @@ export default function App() {
               expandAll={expandAll}
               initialCount={initialCount}
               isLoading={loadingCategories.has(category)}
+              highlightedStackId={highlightedStackId}
+              expandedForSearch={expandedForSearch}
+              onClearExpandedForSearch={(c) => setExpandedForSearch((prev) => { const next = new Set(prev); next.delete(c); return next; })}
             />
           ))}
         </div>
