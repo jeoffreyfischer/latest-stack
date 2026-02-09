@@ -70,14 +70,16 @@ export default function App() {
         if (categoryStacks.length === 0) continue
 
         setLoadingCategories((prev) => new Set(prev).add(category))
-        const fresh = await fetchVersionsForStacks(categoryStacks)
+        await fetchVersionsForStacks(categoryStacks, (id, version) => {
+          setVersions((prev) => {
+            const next = new Map(prev)
+            next.set(id, version)
+            return next
+          })
+        })
         setVersions((prev) => {
-          const merged = new Map(prev)
-          for (const [id, v] of fresh) {
-            if (v) merged.set(id, v)
-          }
-          saveCache(merged)
-          return merged
+          saveCache(prev)
+          return prev
         })
         setLoadingCategories((prev) => {
           const next = new Set(prev)

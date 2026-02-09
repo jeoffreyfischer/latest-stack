@@ -97,11 +97,28 @@ async function fetchVersionForStack(
   return fetchVersion(repo.owner, repo.repo)
 }
 
-/** Fetches versions for a subset of stacks. Used for sequential category-by-category loading. */
+/** Fetches versions for a subset of stacks. Used for sequential category-by-category loading. Calls onVersion as each stack completes so the UI can update progressively within the category. */
 export async function fetchVersionsForStacks(
-  stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]
+  stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[],
+  onVersion?: (id: string, version: string) => void
 ): Promise<Map<string, string>> {
-  return fetchAll(stacks)
+  const results = await Promise.allSettled(
+    stacks.map(async (stack) => {
+      const version =
+        hasCustomVersionSource(stack) || stack.versionRepo || stack.githubRepo
+          ? await fetchVersionForStack(stack)
+          : ''
+      onVersion?.(stack.id, version)
+      return { id: stack.id, version }
+    })
+  )
+  const map = new Map<string, string>()
+  for (const result of results) {
+    if (result.status === 'fulfilled') {
+      map.set(result.value.id, result.value.version)
+    }
+  }
+  return map
 }
 
 async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): Promise<Map<string, string>> {
