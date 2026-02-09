@@ -195,9 +195,23 @@ export default function App() {
                     setCollapseKey((k) => k + 1)
                   }
                 }}
-                className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all hover:shadow-lg hover:from-pink-600 hover:to-blue-600 dark:from-pink-500 dark:to-blue-500 dark:hover:from-pink-400 dark:hover:to-blue-400"
               >
-                {expandAll ? 'Collapse all' : 'Expand all'}
+                {expandAll ? (
+                  <>
+                    Collapse all
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4" aria-hidden>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    Expand all
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4" aria-hidden>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </>
+                )}
               </button>
             )}
           </div>
