@@ -8,6 +8,7 @@ interface StackSectionProps {
   category: string
   stacks: Stack[]
   onToggleFavorite: (id: string) => void
+  onCardClick?: (id: string) => void
   expandAll?: boolean
   initialCount?: number
   isLoading?: boolean
@@ -24,6 +25,7 @@ export function StackSection({
   category,
   stacks,
   onToggleFavorite,
+  onCardClick,
   expandAll = false,
   initialCount: initialCountProp,
   isLoading = false,
@@ -85,6 +87,7 @@ export function StackSection({
             key={stack.id}
             stack={stack}
             onToggleFavorite={onToggleFavorite}
+            onCardClick={onCardClick}
             isHighlighted={highlightedStackId === stack.id}
           />
         ))}

@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import type { Stack } from '../types/stack'
-import { TagIcon, StarIcon } from './icons'
+import { WorldIcon, StarIcon } from './icons'
 
 interface StackCardProps {
   stack: Stack
   onToggleFavorite: (id: string) => void
+  onCardClick?: (id: string) => void
   isHighlighted?: boolean
 }
 
 const LOGO_CDN = 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons'
 
-export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: StackCardProps) {
+export function StackCard({ stack, onToggleFavorite, onCardClick, isHighlighted = false }: StackCardProps) {
   const [logoError, setLogoError] = useState(false)
   const logoUrl = stack.iconSlug ? `${LOGO_CDN}/${stack.iconSlug}.svg` : null
   const showLogo = logoUrl && !logoError
@@ -20,12 +21,9 @@ export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: St
     onToggleFavorite(stack.id)
   }
 
-  const hasVersionLink = !!stack.versionUrl || !!stack.githubRepo
-  const versionLinkUrl = stack.versionUrl
-    ? stack.versionUrl
-    : stack.githubRepo
-      ? `https://github.com/${stack.githubRepo.owner}/${stack.githubRepo.repo}/releases`
-      : null
+  const handleCardClick = () => {
+    onCardClick?.(stack.id)
+  }
 
   return (
     <div
@@ -34,13 +32,12 @@ export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: St
         isHighlighted ? 'ring-2 ring-pink-500 ring-inset' : ''
       }`}
     >
-      {/* Stretched link: covers whole card; content uses pointer-events-none so clicks reach it; actions use pointer-events-auto */}
-      <a
-        href={stack.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute inset-0 z-0 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-inset focus:ring-offset-0"
-        aria-label={`Visit ${stack.name}`}
+      {/* Card click area: highlight on click; world icon opens the stack website */}
+      <button
+        type="button"
+        onClick={handleCardClick}
+        className="absolute inset-0 z-0 cursor-default focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-inset focus:ring-offset-0"
+        aria-label={`Select ${stack.name}`}
       />
       <div className="pointer-events-none relative z-10 flex min-w-0 items-start justify-between gap-2">
         <div className="pointer-events-none flex min-w-0 flex-1 items-center gap-3 overflow-hidden">
@@ -58,23 +55,7 @@ export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: St
               </span>
             )}
           </div>
-          <div
-            className="pointer-events-auto min-w-0 flex-1 cursor-pointer overflow-hidden"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              window.open(stack.url, '_blank', 'noopener,noreferrer')
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                window.open(stack.url, '_blank', 'noopener,noreferrer')
-              }
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label={`Visit ${stack.name}`}
-          >
+          <div className="min-w-0 flex-1 overflow-hidden">
             <h3
               className="truncate font-semibold text-gray-900 dark:text-gray-100"
               title={stack.name}
@@ -90,18 +71,17 @@ export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: St
           </div>
         </div>
         <div className="pointer-events-auto flex shrink-0 items-center gap-0.5 self-start">
-          {hasVersionLink && versionLinkUrl && (
-            <a
-              href={versionLinkUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-              aria-label="Link to version page"
-              title="Link to version page"
-            >
-              <TagIcon />
-            </a>
-          )}
+          <a
+            href={stack.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+            aria-label={`Visit ${stack.name} website`}
+            title={`Visit ${stack.name} website`}
+          >
+            <WorldIcon />
+          </a>
           <button
             type="button"
             onClick={handleStarClick}

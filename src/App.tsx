@@ -232,6 +232,7 @@ export default function App() {
               category="favorites"
               stacks={favoriteStacks}
               onToggleFavorite={toggleFavorite}
+              onCardClick={(id) => setHighlightedStackId(id)}
               expandAll={expandAll}
               initialCount={initialCount}
               highlightedStackId={highlightedStackId}
@@ -249,6 +250,7 @@ export default function App() {
               category={category}
               stacks={categoryStacks}
               onToggleFavorite={toggleFavorite}
+              onCardClick={(id) => setHighlightedStackId(id)}
               expandAll={expandAll}
               initialCount={initialCount}
               isLoading={loadingCategories.has(category)}
