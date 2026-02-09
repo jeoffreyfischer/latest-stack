@@ -87,10 +87,10 @@ export function SearchBar({ stacks, onSelect }: SearchBarProps) {
             ? `search-result-${matches[focusedIndex].id}`
             : undefined
         }
-        className="w-full rounded-xl border border-gray-200/80 bg-white/90 px-4 py-3 pr-10 text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500/20 dark:border-gray-700 dark:bg-gray-900/90 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-pink-600"
+        className="h-10 w-full rounded-lg border border-gray-200/80 bg-white/90 px-3 pr-9 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500/20 dark:border-gray-700 dark:bg-gray-900/90 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-pink-600"
       />
       <svg
-        className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+        className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

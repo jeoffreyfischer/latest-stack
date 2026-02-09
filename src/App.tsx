@@ -137,8 +137,35 @@ export default function App() {
   return (
     <div className="min-h-screen bg-mesh">
       <header className="relative border-b border-gray-200/60 bg-white/90 backdrop-blur-md px-4 py-12 dark:border-gray-800/60 dark:bg-gray-950/95 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center gap-8 lg:block">
+          <div className="flex flex-shrink-0 items-center justify-center gap-2 lg:absolute lg:right-8 lg:top-6">
+            <div className="w-40 sm:w-52">
+              <SearchBar stacks={stacks} onSelect={handleSearchSelect} />
+            </div>
+            <a
+              href="https://github.com/jeoffreyfischer/latest-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              aria-label="View source on GitHub"
+            >
+              <GitHubIcon />
+            </a>
+            <button
+              type="button"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? (
+                <SunIcon />
+              ) : (
+                <MoonIcon />
+              )}
+            </button>
+          </div>
+          <div className="mx-auto max-w-6xl w-full">
+            <div className="flex flex-col items-center text-center">
             <h1 className="text-4xl font-bold tracking-tighter text-balance sm:text-5xl lg:text-6xl">
               <span className="text-gray-950 dark:text-gray-50">Latest Stack</span>
               <br />
@@ -149,33 +176,8 @@ export default function App() {
             <p className="mt-6 max-w-xl text-base text-gray-600 dark:text-gray-400 sm:text-lg">
               One hub to view them all
             </p>
-            <div className="mt-6 flex justify-center">
-              <SearchBar stacks={stacks} onSelect={handleSearchSelect} />
-            </div>
           </div>
-        </div>
-        <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6 lg:right-8 lg:top-6">
-          <a
-            href="https://github.com/jeoffreyfischer/latest-stack"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-            aria-label="View source on GitHub"
-          >
-            <GitHubIcon />
-          </a>
-          <button
-            type="button"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {theme === 'dark' ? (
-              <SunIcon />
-            ) : (
-              <MoonIcon />
-            )}
-          </button>
+          </div>
         </div>
       </header>
 
