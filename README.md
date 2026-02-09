@@ -65,3 +65,16 @@ The token is inlined in the build; use a token with minimal scope.
 | Official APIs | Go (go.dev), Java (Adoptium), Cursor (community API) |
 
 See [AGENTS.md](./AGENTS.md) for the version-fetch flow and how to add new stacks.
+
+## Contribute
+
+Contributions are welcome. Here are ways to get involved:
+
+1. **Report issues** - Found a bug or outdated version? Open an [issue](https://github.com/jeoffreyfischer/latest-stack/issues).
+2. **Suggest changes** - Ideas for new stacks, features, or improvements? Start with an issue so we can discuss.
+3. **Submit a pull request** - Code changes are appreciated.
+   - Fork the repo, create a branch, make your changes
+   - Run `npm run build` and `npm run lint` before submitting
+   - See [AGENTS.md](./AGENTS.md) for conventions and how to add new stacks
+
+Adding a new stack (languages, frameworks, tools) is a great first contribution - see the "Adding a new stack" section in [AGENTS.md](./AGENTS.md).
