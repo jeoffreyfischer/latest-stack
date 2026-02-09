@@ -145,17 +145,17 @@ export default function App() {
               href="https://github.com/jeoffreyfischer/latest-stack"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               aria-label="View source on GitHub"
             >
               <GitHubIcon />
             </a>
-            <button
-              type="button"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
+          <button
+            type="button"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
               {theme === 'dark' ? (
                 <SunIcon />
               ) : (

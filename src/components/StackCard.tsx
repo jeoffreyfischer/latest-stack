@@ -30,7 +30,7 @@ export function StackCard({ stack, onToggleFavorite, isHighlighted = false }: St
   return (
     <div
       data-stack-id={stack.id}
-      className={`group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-4 transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 dark:border-gray-700/80 dark:bg-gray-900/50 dark:hover:border-pink-900/40 dark:hover:bg-pink-950/20 ${
+      className={`group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 dark:border-gray-700/80 dark:bg-gray-900/50 dark:hover:border-pink-900/40 dark:hover:bg-pink-950/20 ${
         isHighlighted ? 'ring-2 ring-pink-500 ring-inset' : ''
       }`}
     >

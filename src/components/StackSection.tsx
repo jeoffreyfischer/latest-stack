@@ -52,7 +52,7 @@ export function StackSection({
   const showPerSectionToggle = hasMore
 
   return (
-    <section className={`rounded-2xl border p-5 transition-colors ${colorClass}`}>
+    <section className={`rounded-2xl border p-5 shadow-sm transition-colors ${colorClass}`}>
       <h2 className="mb-4 text-lg font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 sm:text-xl">
         {label}
         {isLoading && stacks.some((s) => !s.latestVersion?.trim()) && (
