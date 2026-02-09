@@ -324,7 +324,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'backend',
     url: 'https://phoenixframework.org',
     versionSource: 'phoenix',
-    versionUrl: 'https://endoflife.date/phoenix',
+    versionUrl: 'https://hex.pm/packages/phoenix',
     iconSlug: 'phoenixframework',
   },
   {

@@ -15,17 +15,26 @@ if (token) {
 }
 
 const GCP_COMPONENTS_URL = 'https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json'
-const CORS_PROXIES = [
-  'https://corsproxy.io/?url=',
-  'https://api.cors.lol/?url=',
+/** Proxies that use ?url= with encoded target URL */
+const CORS_PROXIES_ENCODED = [
   'https://api.allorigins.win/raw?url=',
+  'https://api.cors.lol/?url=',
+]
+
+/** Proxies that append raw URL (e.g. cors-anywhere.com/URL) */
+const CORS_PROXIES_RAW = [
+  'https://cors-anywhere.com/',
 ]
 
 async function fetchWithCorsProxy(url: string, parse: (data: unknown) => string): Promise<string> {
   const encoded = encodeURIComponent(url)
-  for (const proxy of CORS_PROXIES) {
+  const proxiesEncoded = CORS_PROXIES_ENCODED.map((p) => p + encoded)
+  const proxiesRaw = CORS_PROXIES_RAW.map((p) => p + url)
+  const allUrls = [...proxiesEncoded, ...proxiesRaw]
+
+  for (const proxyUrl of allUrls) {
     try {
-      const res = await fetch(proxy + encoded)
+      const res = await fetch(proxyUrl)
       if (!res.ok) continue
       const data = await res.json()
       const v = parse(data)
@@ -48,7 +57,18 @@ function parseGcpVersion(data: unknown): string {
   return fallback?.version?.version_string ?? ''
 }
 
+/** GCP SDK: try direct fetch first (some envs allow CORS), then proxy. */
 export async function fetchGcpVersion(): Promise<string> {
+  try {
+    const res = await fetch(GCP_COMPONENTS_URL)
+    if (res.ok) {
+      const data = await res.json()
+      const v = parseGcpVersion(data)
+      if (v) return v
+    }
+  } catch {
+    // fall through to proxy
+  }
   return fetchWithCorsProxy(GCP_COMPONENTS_URL, parseGcpVersion)
 }
 
@@ -257,7 +277,7 @@ const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitla
 
 const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
 
-/** R-hub API has no CORS; uses proxy. */
+/** R-hub API has no CORS; use proxy only. */
 export async function fetchRVersion(): Promise<string> {
   return fetchWithCorsProxy(R_HUB_API, (d) => (d as { version?: string }).version ?? '')
 }
@@ -267,11 +287,20 @@ export async function fetchQwikVersion(): Promise<string> {
   return fetchNpmVersion('@builder.io/qwik')
 }
 
-const ENDOFLIFE_PHOENIX_URL = 'https://endoflife.date/api/phoenix.json'
+const HEX_PHOENIX_URL = 'https://hex.pm/api/packages/phoenix'
 
-/** Phoenix: endoflife.date blocks CORS; use proxy. */
+/** Phoenix: hex.pm API allows CORS; no proxy needed. */
 export async function fetchPhoenixVersion(): Promise<string> {
-  return fetchWithCorsProxy(ENDOFLIFE_PHOENIX_URL, (d) => (d as { latest: string }[])[0]?.latest ?? '')
+  try {
+    const res = await fetch(HEX_PHOENIX_URL)
+    if (res.ok) {
+      const data = (await res.json()) as { latest_stable_version?: string }
+      return data.latest_stable_version ?? ''
+    }
+  } catch {
+    // ignore
+  }
+  return ''
 }
 
 /** Alpine.js: npm registry. */
@@ -349,8 +378,18 @@ export async function fetchJsonSchemaVersion(): Promise<string> {
   return fetchNpmVersion('json-schema')
 }
 
-/** GitLab Runner is on GitLab.com, not GitHub; uses CORS proxy. */
+/** GitLab Runner is on GitLab.com, not GitHub; try direct fetch first, then proxy. */
 export async function fetchGitlabRunnerVersion(): Promise<string> {
+  try {
+    const res = await fetch(GITLAB_RUNNER_API)
+    if (res.ok) {
+      const data = (await res.json()) as { tag_name?: string }[]
+      const tag = data[0]?.tag_name ?? ''
+      return tag ? normalizeTag(tag) : ''
+    }
+  } catch {
+    // fall through to proxy
+  }
   const tag = await fetchWithCorsProxy(
     GITLAB_RUNNER_API,
     (d) => (d as { tag_name?: string }[])[0]?.tag_name ?? ''
