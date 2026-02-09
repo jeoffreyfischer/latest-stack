@@ -43,7 +43,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               <img
                 src={logoUrl}
                 alt=""
-                className="h-5 w-5 object-contain"
+                className="h-5 w-5 object-contain dark:invert"
                 onError={() => setLogoError(true)}
               />
             ) : (
