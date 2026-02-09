@@ -10,6 +10,7 @@ interface StackSectionProps {
   onToggleFavorite: (id: string) => void
   expandAll?: boolean
   initialCount?: number
+  isLoading?: boolean
 }
 
 export function StackSection({
@@ -18,6 +19,7 @@ export function StackSection({
   onToggleFavorite,
   expandAll = false,
   initialCount: initialCountProp,
+  isLoading = false,
 }: StackSectionProps) {
   const [expanded, setExpanded] = useState(false)
   const internalCount = useInitialVisibleCount()
@@ -34,6 +36,15 @@ export function StackSection({
     <section className={`rounded-2xl border p-5 transition-colors ${colorClass}`}>
       <h2 className="mb-4 text-lg font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 sm:text-xl">
         {label}
+        {isLoading && stacks.some((s) => !s.latestVersion?.trim()) && (
+          <span className="ml-3 inline-flex items-center gap-2 rounded-full border border-pink-200/60 bg-gradient-to-r from-pink-500/10 to-blue-500/10 px-3 py-1 text-xs font-medium tracking-wide text-pink-600 dark:border-pink-800/40 dark:from-pink-500/15 dark:to-blue-500/15 dark:text-pink-400">
+            <span
+              className="h-2.5 w-2.5 shrink-0 animate-spin rounded-full border-2 border-pink-200 border-t-pink-500 dark:border-pink-800 dark:border-t-pink-400"
+              aria-hidden
+            />
+            Loading
+          </span>
+        )}
       </h2>
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [&>*]:min-w-0">
         {visibleStacks.map((stack) => (

@@ -65,7 +65,7 @@ npm run preview
 ### Project structure
 - **Entry:** `index.html` → loads `src/main.tsx` → mounts `App` into `#root`
 - **Main UI:** `src/App.tsx` – stack version dashboard with category sections, favorites, theme toggle
-- **Components:** `src/components/` – StackCard, StackSection, LoadingOverlay, icons
+- **Components:** `src/components/` – StackCard, StackSection, icons
 - **Data:** `src/data/stacks.ts` – STACK_DEFINITIONS, CATEGORY_ORDER, CATEGORY_LABELS, CATEGORY_COLORS (categories include language, frontend, backend, protocols, etc.)
 - **Version fetching:** `src/lib/fetchVersion.ts` (fetchers), `src/lib/fetchVersions.ts` (orchestration, VERSION_FETCHERS map)
 - **Hooks:** `src/hooks/` – useTheme, useFavorites, useInitialVisibleCount
@@ -79,7 +79,7 @@ npm run preview
 ```
 STACK_DEFINITIONS (stacks.ts)
     ↓
-App.tsx: fetchAllVersions() → versions Map<id, version>
+App.tsx: fetchVersionsForStacks() per category (sequential) → versions Map<id, version>
     ↓
 stacks = STACK_DEFINITIONS + latestVersion + isFavorite
     ↓
@@ -94,7 +94,6 @@ App
 ├── header (title, GitHub link, theme toggle)
 ├── main
 │   ├── [Expand all] [Clear favorites] (conditional)
-│   ├── LoadingOverlay (shows over content when isLoading)
 │   ├── StackSection (favorites) – if any favorites
 │   └── StackSection (per category) – language, frontend, backend, etc.
 │       └── StackCard (per stack)
@@ -107,10 +106,9 @@ App
 
 **Version fetching flow:**
 1. `getInitialVersionState()` – sync: reads localStorage cache for instant display
-2. `fetchAllVersions(STACK_DEFINITIONS, setVersions)` – runs on mount
-3. If cache exists: return cached map immediately; background fetch; merge and cache; call `setVersions` if changed
-4. If no cache: fetch all; cache; return. First load shows LoadingOverlay until done.
-5. Per stack: `versionSource` → `VERSION_FETCHERS[versionSource]()`; else `githubRepo`/`versionRepo` → `fetchVersion()` (GitHub Releases)
+2. Categories fetched sequentially in CATEGORY_ORDER; each category shows "Loading..." while fetching
+3. `fetchVersionsForStacks(stacks)` – fetches for a subset; merge into versions; save cache
+4. Per stack: `versionSource` → `VERSION_FETCHERS[versionSource]()`; else `githubRepo`/`versionRepo` → `fetchVersion()` (GitHub Releases)
 
 **Adding a new stack:**
 1. Add entry to `STACK_DEFINITIONS` in `stacks.ts` (id, name, category, url, iconSlug, githubRepo/versionSource/versionUrl)

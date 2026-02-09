@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from 'react'
 import { StackSection } from './components/StackSection'
-import { LoadingOverlay } from './components/LoadingOverlay'
 import { GitHubIcon, SunIcon, MoonIcon } from './components/icons'
 import { useInitialVisibleCount } from './hooks/useInitialVisibleCount'
 import { useTheme } from './hooks/useTheme'
 import { useFavorites } from './hooks/useFavorites'
 import { STACK_DEFINITIONS, CATEGORY_ORDER } from './data/stacks'
-import { fetchAllVersions, getInitialVersionState } from './lib/fetchVersions'
+import { fetchVersionsForStacks, getInitialVersionState, saveCache } from './lib/fetchVersions'
 import type { Stack } from './types/stack'
 
 const initialVersionState = getInitialVersionState()
@@ -17,16 +16,38 @@ export default function App() {
   const [versions, setVersions] = useState<Map<string, string>>(
     () => initialVersionState.versions
   )
-  const [isLoading, setIsLoading] = useState(
-    () => initialVersionState.isLoading
+  const [loadingCategories, setLoadingCategories] = useState<Set<string>>(
+    () => new Set()
   )
   const [expandAll, setExpandAll] = useState(false)
   const initialCount = useInitialVisibleCount()
 
   useEffect(() => {
-    fetchAllVersions(STACK_DEFINITIONS, setVersions)
-      .then(setVersions)
-      .finally(() => setIsLoading(false))
+    async function loadByCategory() {
+      for (const category of CATEGORY_ORDER) {
+        const categoryStacks = STACK_DEFINITIONS.filter(
+          (s) => s.category === category && (category !== 'tooling' || s.name !== 'R')
+        )
+        if (categoryStacks.length === 0) continue
+
+        setLoadingCategories((prev) => new Set(prev).add(category))
+        const fresh = await fetchVersionsForStacks(categoryStacks)
+        setVersions((prev) => {
+          const merged = new Map(prev)
+          for (const [id, v] of fresh) {
+            if (v) merged.set(id, v)
+          }
+          saveCache(merged)
+          return merged
+        })
+        setLoadingCategories((prev) => {
+          const next = new Set(prev)
+          next.delete(category)
+          return next
+        })
+      }
+    }
+    void loadByCategory()
   }, [])
 
   const stacks = useMemo(() => {
@@ -116,7 +137,7 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
-        {!isLoading && (anySectionHasMore || favoriteStacks.length > 0) && (
+        {(anySectionHasMore || favoriteStacks.length > 0) && (
           <div className="flex flex-wrap justify-center gap-2">
             {anySectionHasMore && (
               <button
@@ -138,7 +159,7 @@ export default function App() {
             )}
           </div>
         )}
-        {!isLoading && versions.size === 0 && (
+        {versions.size === 0 && loadingCategories.size === 0 && (
           <p className="text-center text-sm text-amber-600 dark:text-amber-400">
             Could not fetch versions (GitHub API rate limit?). Add{' '}
             <code className="rounded bg-gray-200 px-1.5 py-0.5 font-mono text-xs dark:bg-gray-800">
@@ -149,7 +170,6 @@ export default function App() {
         )}
 
         <div className="relative space-y-8">
-          <LoadingOverlay show={isLoading} />
           {favoriteStacks.length > 0 && (
             <StackSection
               category="favorites"
@@ -167,6 +187,7 @@ export default function App() {
               onToggleFavorite={toggleFavorite}
               expandAll={expandAll}
               initialCount={initialCount}
+              isLoading={loadingCategories.has(category)}
             />
           ))}
         </div>

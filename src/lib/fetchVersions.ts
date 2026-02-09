@@ -97,6 +97,13 @@ async function fetchVersionForStack(
   return fetchVersion(repo.owner, repo.repo)
 }
 
+/** Fetches versions for a subset of stacks. Used for sequential category-by-category loading. */
+export async function fetchVersionsForStacks(
+  stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]
+): Promise<Map<string, string>> {
+  return fetchAll(stacks)
+}
+
 async function fetchAll(stacks: Omit<Stack, 'latestVersion' | 'isFavorite'>[]): Promise<Map<string, string>> {
   const results = await Promise.allSettled(
     stacks.map(async (stack) => {
@@ -149,7 +156,7 @@ export function getInitialVersionState(): {
   }
 }
 
-function saveCache(map: Map<string, string>) {
+export function saveCache(map: Map<string, string>) {
   try {
     const data = Object.fromEntries([...map.entries()].filter(([, v]) => v && v.length > 0))
     if (Object.keys(data).length === 0) return
