@@ -14,7 +14,6 @@ if (token) {
   headers.Authorization = `Bearer ${token}`
 }
 
-const GCP_COMPONENTS_URL = 'https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json'
 /** Proxies that use ?url= with encoded target URL */
 const CORS_PROXIES_ENCODED = [
   'https://api.allorigins.win/raw?url=',
@@ -46,30 +45,9 @@ async function fetchWithCorsProxy(url: string, parse: (data: unknown) => string)
   return ''
 }
 
-function parseGcpVersion(data: unknown): string {
-  const d = data as {
-    components?: Array<{ id?: string; version?: { version_string?: string } }>
-  }
-  const core = d.components?.find((c) => c.id === 'core')
-  const version = core?.version?.version_string ?? ''
-  if (version) return version
-  const fallback = d.components?.find((c) => ['beta', 'alpha'].includes(c.id ?? ''))
-  return fallback?.version?.version_string ?? ''
-}
-
-/** GCP SDK: try direct fetch first (some envs allow CORS), then proxy. */
+/** GCP SDK: use actions-hub/gcloud GitHub releases (CORS-friendly; mirrors official gcloud versions). */
 export async function fetchGcpVersion(): Promise<string> {
-  try {
-    const res = await fetch(GCP_COMPONENTS_URL)
-    if (res.ok) {
-      const data = await res.json()
-      const v = parseGcpVersion(data)
-      if (v) return v
-    }
-  } catch {
-    // fall through to proxy
-  }
-  return fetchWithCorsProxy(GCP_COMPONENTS_URL, parseGcpVersion)
+  return fetchVersion('actions-hub', 'gcloud')
 }
 
 const JAVA_API_URL = 'https://api.adoptium.net/v3/info/release_versions?release_type=ga&page_size=1'

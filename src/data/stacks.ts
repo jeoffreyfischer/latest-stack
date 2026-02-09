@@ -734,7 +734,7 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     category: 'cloud',
     url: 'https://cloud.google.com',
     versionSource: 'gcp',
-    versionUrl: 'https://cloud.google.com/sdk/docs/release-notes',
+    versionUrl: 'https://github.com/actions-hub/gcloud/releases',
     iconSlug: 'googlecloud',
   },
   {
