@@ -52,7 +52,23 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
               </span>
             )}
           </div>
-          <div className="min-w-0 flex-1 overflow-hidden">
+          <div
+            className="pointer-events-auto min-w-0 flex-1 cursor-pointer overflow-hidden"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              window.open(stack.url, '_blank', 'noopener,noreferrer')
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                window.open(stack.url, '_blank', 'noopener,noreferrer')
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={`Visit ${stack.name}`}
+          >
             <h3
               className="truncate font-semibold text-slate-900 dark:text-slate-100"
               title={stack.name}
@@ -61,7 +77,7 @@ export function StackCard({ stack, onToggleFavorite }: StackCardProps) {
             </h3>
             <p
               className="truncate text-sm font-mono font-medium text-emerald-600 dark:text-emerald-400"
-              title={stack.name}
+              title={stack.latestVersion ? `v${stack.latestVersion}` : undefined}
             >
               {stack.latestVersion ? `v${stack.latestVersion}` : '—'}
             </p>
