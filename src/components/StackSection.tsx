@@ -17,6 +17,7 @@ interface StackSectionProps {
   collapseKey?: number
   onClearExpandedForSearch?: (category: string) => void
   onToggleIndividuallyCollapsed?: (category: string) => void
+  onClearFavorites?: () => void
 }
 
 export function StackSection({
@@ -32,6 +33,7 @@ export function StackSection({
   collapseKey = 0,
   onClearExpandedForSearch,
   onToggleIndividuallyCollapsed,
+  onClearFavorites,
 }: StackSectionProps) {
   const [expanded, setExpanded] = useState(false)
 
@@ -52,8 +54,20 @@ export function StackSection({
   const showPerSectionToggle = hasMore
 
   return (
-    <section className={`rounded-2xl border p-5 shadow-sm transition-colors ${colorClass}`}>
-      <h2 className="mb-4 text-lg font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 sm:text-xl">
+    <section className={`relative rounded-2xl border p-5 shadow-sm transition-colors ${colorClass}`}>
+      {category === 'favorites' && onClearFavorites && (
+        <button
+          type="button"
+          onClick={onClearFavorites}
+          className="absolute right-4 top-4 rounded p-1 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
+          aria-label="Clear all favorites"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+      <h2 className={`mb-4 text-lg font-semibold uppercase tracking-widest sm:text-xl ${category === 'favorites' ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'} ${category === 'favorites' && onClearFavorites ? 'pr-8' : ''}`}>
         {label}
         {isLoading && stacks.some((s) => !s.latestVersion?.trim()) && (
           <span className="ml-3 inline-flex items-center gap-2 rounded-full border border-pink-200/60 bg-gradient-to-r from-pink-500/10 to-blue-500/10 px-3 py-1 text-xs font-medium tracking-wide text-pink-600 dark:border-pink-800/40 dark:from-pink-500/15 dark:to-blue-500/15 dark:text-pink-400">

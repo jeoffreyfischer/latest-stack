@@ -200,15 +200,6 @@ export default function App() {
                 {expandAll ? 'Collapse all' : 'Expand all'}
               </button>
             )}
-            {favoriteStacks.length > 0 && (
-              <button
-                type="button"
-                onClick={clearAllFavorites}
-                className="rounded-lg border border-amber-200/80 bg-amber-50/80 px-4 py-2 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100 dark:border-amber-800/60 dark:bg-amber-950/30 dark:text-amber-400 dark:hover:bg-amber-900/50"
-              >
-                Clear favorites
-              </button>
-            )}
           </div>
         )}
         {versions.size === 0 && loadingCategories.size === 0 && (
@@ -235,6 +226,7 @@ export default function App() {
               collapseKey={collapseKey}
               onClearExpandedForSearch={(c) => setExpandedForSearch((prev) => { const next = new Set(prev); next.delete(c); return next; })}
               onToggleIndividuallyCollapsed={(c) => setIndividuallyCollapsed((prev) => { const next = new Set(prev); if (next.has(c)) next.delete(c); else next.add(c); return next; })}
+              onClearFavorites={clearAllFavorites}
             />
           )}
           {stacksByCategory.map(({ category, stacks: categoryStacks }) => (
