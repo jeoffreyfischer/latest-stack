@@ -66,6 +66,10 @@ The token is inlined in the build; use a token with minimal scope.
 
 See [AGENTS.md](./AGENTS.md) for the version-fetch flow and how to add new stacks.
 
+## Acknowledgments
+
+Thanks to [Griffen](https://github.com/griffenedge) for his contributions and for helping improve the design, UX, and UI.
+
 ## Contribute
 
 Contributions are welcome. Here are ways to get involved:
