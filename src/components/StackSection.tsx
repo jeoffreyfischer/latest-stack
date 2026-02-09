@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Stack } from '../types/stack'
 import { StackCard } from './StackCard'
 import { CATEGORY_LABELS, CATEGORY_COLORS } from '../data/stacks'
@@ -13,7 +13,10 @@ interface StackSectionProps {
   isLoading?: boolean
   highlightedStackId?: string | null
   expandedForSearch?: Set<string>
+  individuallyCollapsed?: Set<string>
+  collapseKey?: number
   onClearExpandedForSearch?: (category: string) => void
+  onToggleIndividuallyCollapsed?: (category: string) => void
 }
 
 export function StackSection({
@@ -25,19 +28,28 @@ export function StackSection({
   isLoading = false,
   highlightedStackId = null,
   expandedForSearch = new Set(),
+  individuallyCollapsed = new Set(),
+  collapseKey = 0,
   onClearExpandedForSearch,
+  onToggleIndividuallyCollapsed,
 }: StackSectionProps) {
   const [expanded, setExpanded] = useState(false)
+
+  useEffect(() => {
+    setExpanded(false)
+  }, [collapseKey])
   const internalCount = useInitialVisibleCount()
   const initialCount = initialCountProp ?? internalCount
 
   const label = CATEGORY_LABELS[category] ?? category
   const colorClass = CATEGORY_COLORS[category] ?? 'border-slate-500/30 bg-slate-500/5'
 
-  const isExpanded = expandAll || expanded || expandedForSearch.has(category)
+  const isExpanded = expandAll
+    ? !individuallyCollapsed.has(category)
+    : expanded || expandedForSearch.has(category)
   const visibleStacks = isExpanded ? stacks : stacks.slice(0, initialCount)
   const hasMore = stacks.length > initialCount
-  const showPerSectionToggle = hasMore && !expandAll
+  const showPerSectionToggle = hasMore
 
   return (
     <section className={`rounded-2xl border p-5 transition-colors ${colorClass}`}>
@@ -68,8 +80,12 @@ export function StackSection({
           <button
             type="button"
             onClick={() => {
-              setExpanded((e) => !e)
-              onClearExpandedForSearch?.(category)
+              if (expandAll) {
+                onToggleIndividuallyCollapsed?.(category)
+              } else {
+                setExpanded((e) => !e)
+                onClearExpandedForSearch?.(category)
+              }
             }}
             className="w-fit cursor-pointer rounded-lg border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
           >

@@ -21,6 +21,8 @@ export default function App() {
     () => new Set()
   )
   const [expandAll, setExpandAll] = useState(false)
+  const [collapseKey, setCollapseKey] = useState(0)
+  const [individuallyCollapsed, setIndividuallyCollapsed] = useState<Set<string>>(new Set())
   const [highlightedStackId, setHighlightedStackId] = useState<string | null>(null)
   const initialCount = useInitialVisibleCount()
 
@@ -183,7 +185,15 @@ export default function App() {
             {anySectionHasMore && (
               <button
                 type="button"
-                onClick={() => setExpandAll((e) => !e)}
+                onClick={() => {
+                  const next = !expandAll
+                  setExpandAll(next)
+                  if (!next) {
+                    setExpandedForSearch(new Set())
+                    setIndividuallyCollapsed(new Set())
+                    setCollapseKey((k) => k + 1)
+                  }
+                }}
                 className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               >
                 {expandAll ? 'Collapse all' : 'Expand all'}
@@ -220,7 +230,10 @@ export default function App() {
               initialCount={initialCount}
               highlightedStackId={highlightedStackId}
               expandedForSearch={expandedForSearch}
+              individuallyCollapsed={individuallyCollapsed}
+              collapseKey={collapseKey}
               onClearExpandedForSearch={(c) => setExpandedForSearch((prev) => { const next = new Set(prev); next.delete(c); return next; })}
+              onToggleIndividuallyCollapsed={(c) => setIndividuallyCollapsed((prev) => { const next = new Set(prev); if (next.has(c)) next.delete(c); else next.add(c); return next; })}
             />
           )}
           {stacksByCategory.map(({ category, stacks: categoryStacks }) => (
@@ -234,7 +247,10 @@ export default function App() {
               isLoading={loadingCategories.has(category)}
               highlightedStackId={highlightedStackId}
               expandedForSearch={expandedForSearch}
+              individuallyCollapsed={individuallyCollapsed}
+              collapseKey={collapseKey}
               onClearExpandedForSearch={(c) => setExpandedForSearch((prev) => { const next = new Set(prev); next.delete(c); return next; })}
+              onToggleIndividuallyCollapsed={(c) => setIndividuallyCollapsed((prev) => { const next = new Set(prev); if (next.has(c)) next.delete(c); else next.add(c); return next; })}
             />
           ))}
         </div>
