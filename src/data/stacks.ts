@@ -893,17 +893,17 @@ export const CATEGORY_LABELS: Record<string, string> = {
  * Consecutive categories (by display order) use distinct hues to avoid visual clash.
  */
 export const CATEGORY_COLORS: Record<string, string> = {
-  favorites: 'border-amber-500/40 bg-amber-500/10',
-  language: 'border-green-500/30 bg-green-500/5',       // Node.js
-  frontend: 'border-cyan-400/30 bg-cyan-400/5',        // React
-  backend: 'border-red-600/30 bg-red-600/5',           // NestJS
-  tooling: 'border-violet-500/30 bg-violet-500/5',      // Vite
-  editors: 'border-blue-500/30 bg-blue-500/5',          // VS Code
-  cicd: 'border-slate-600/30 bg-slate-600/5',          // GitHub Actions
-  database: 'border-emerald-600/30 bg-emerald-600/5', // MongoDB
-  cloud: 'border-orange-500/30 bg-orange-500/5',       // AWS
-  testing: 'border-red-500/30 bg-red-500/5',           // Jest
-  devops: 'border-blue-600/30 bg-blue-600/5',          // Docker
-  mobile: 'border-fuchsia-500/30 bg-fuchsia-500/5',   // Flutter
-  protocols: 'border-slate-500/30 bg-slate-500/5',    // Standards
+  favorites: 'border-amber-200/80 bg-amber-50/60 dark:border-amber-800/40 dark:bg-amber-950/25',
+  language: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  frontend: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  backend: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  tooling: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  editors: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  cicd: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  database: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  cloud: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  testing: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  devops: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  mobile: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
+  protocols: 'border-gray-200/80 bg-white/90 dark:border-gray-700/50 dark:bg-gray-900/30',
 }

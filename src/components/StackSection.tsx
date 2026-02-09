@@ -31,11 +31,11 @@ export function StackSection({
   const showPerSectionToggle = hasMore && !expandAll
 
   return (
-    <section className={`rounded-xl border p-5 shadow-sm transition-shadow hover:shadow-md ${colorClass}`}>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+    <section className={`rounded-2xl border p-5 transition-colors ${colorClass}`}>
+      <h2 className="mb-4 text-lg font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 sm:text-xl">
         {label}
       </h2>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [&>*]:min-w-0">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [&>*]:min-w-0">
         {visibleStacks.map((stack) => (
           <StackCard key={stack.id} stack={stack} onToggleFavorite={onToggleFavorite} />
         ))}
@@ -45,7 +45,7 @@ export function StackSection({
           <button
             type="button"
             onClick={() => setExpanded((e) => !e)}
-            className="w-fit cursor-pointer rounded-lg border border-slate-200 bg-white px-6 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+            className="w-fit cursor-pointer rounded-lg border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
           >
             {expanded ? 'See less' : `See more (${stacks.length - initialCount} more)`}
           </button>

@@ -74,19 +74,19 @@ export default function App() {
     stacksByCategory.some(({ stacks: s }) => s.length > initialCount)
 
   return (
-    <div className="min-h-screen bg-slate-50 bg-mesh dark:bg-slate-900">
-      <header className="relative border-b border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-10 dark:border-slate-700/50 dark:bg-slate-950/90 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen bg-mesh">
+      <header className="relative border-b border-gray-200/60 bg-white/90 backdrop-blur-md px-4 py-12 dark:border-gray-800/60 dark:bg-gray-950/95 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-center text-center">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-              <span className="text-gradient">Latest Stack Versions</span>
+            <h1 className="text-4xl font-bold tracking-tighter text-balance sm:text-5xl lg:text-6xl">
+              <span className="text-gray-950 dark:text-gray-50">Latest Stack</span>
               <br />
-              <span className="mt-3 inline-block pb-[0.2em] bg-gradient-to-r from-emerald-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-cyan-400 dark:to-violet-400">
-                One Dashboard. Always Current.
+              <span className="mt-2 inline-block bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent dark:from-pink-400 dark:to-blue-400">
+                Versions
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
-              Stay up-to-date with the official versions of languages, frameworks, tools and more
+            <p className="mt-6 max-w-xl text-base text-gray-600 dark:text-gray-400 sm:text-lg">
+              One hub to view them all
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function App() {
             href="https://github.com/jeoffreyfischer/latest-stack"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-xl border border-slate-200/60 bg-white/60 p-2.5 text-slate-500 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
             aria-label="View source on GitHub"
           >
             <GitHubIcon />
@@ -103,7 +103,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="rounded-xl border border-slate-200/60 bg-white/60 p-2.5 text-slate-500 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-800/60 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            className="rounded-lg border border-gray-200/80 bg-white/80 p-2.5 text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-900/80 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
@@ -115,14 +115,14 @@ export default function App() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
         {!isLoading && (anySectionHasMore || favoriteStacks.length > 0) && (
           <div className="flex flex-wrap justify-center gap-2">
             {anySectionHasMore && (
               <button
                 type="button"
                 onClick={() => setExpandAll((e) => !e)}
-                className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               >
                 {expandAll ? 'Collapse all' : 'Expand all'}
               </button>
@@ -131,7 +131,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={clearAllFavorites}
-                className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-2 text-sm font-medium text-amber-700 shadow-sm transition-all hover:border-amber-300 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400 dark:hover:border-amber-700 dark:hover:bg-amber-900/50"
+                className="rounded-lg border border-amber-200/80 bg-amber-50/80 px-4 py-2 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100 dark:border-amber-800/60 dark:bg-amber-950/30 dark:text-amber-400 dark:hover:bg-amber-900/50"
               >
                 Clear favorites
               </button>
@@ -141,7 +141,7 @@ export default function App() {
         {!isLoading && versions.size === 0 && (
           <p className="text-center text-sm text-amber-600 dark:text-amber-400">
             Could not fetch versions (GitHub API rate limit?). Add{' '}
-            <code className="rounded bg-slate-200 px-1 dark:bg-slate-700">
+            <code className="rounded bg-gray-200 px-1.5 py-0.5 font-mono text-xs dark:bg-gray-800">
               VITE_GITHUB_TOKEN
             </code>{' '}
             to .env or try again later.
@@ -172,13 +172,13 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="mt-16 border-t border-slate-200/80 bg-white/50 px-4 py-8 dark:border-slate-700/50 dark:bg-slate-950/50 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col items-center gap-6 text-center text-sm text-slate-500 dark:text-slate-400">
+      <footer className="mt-20 border-t border-gray-200/60 bg-white/50 px-4 py-10 dark:border-gray-800/60 dark:bg-gray-950/50 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col items-center gap-4 text-center text-sm text-gray-500 dark:text-gray-400">
             <p className="max-w-xl">
-              Versions are fetched from GitHub Releases, endoflife.date, registries, and official APIs.
+              Versions from GitHub Releases, endoflife.date, npm, and official APIs.
             </p>
-            <p>© {new Date().getFullYear()} Latest Stack</p>
+            <p className="font-medium text-gray-400 dark:text-gray-500">© {new Date().getFullYear()} Latest Stack</p>
           </div>
         </div>
       </footer>

@@ -2,6 +2,14 @@
 
 @custom-variant dark (&&:where(.dark, .dark *));
 
+:root {
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
 button,
 a[href],
 [role="button"] {
@@ -10,20 +18,21 @@ a[href],
 
 /* Gradient text utility */
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 dark:from-slate-100 dark:via-slate-200 dark:to-slate-100;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 dark:from-gray-100 dark:via-gray-200 dark:to-gray-100;
 }
 
-/* Subtle background pattern */
+/* Modern dev-style background - subtle grid (Tailwind pink/blue inspired) */
 .bg-mesh {
+  background-color: rgb(250 250 250);
   background-image:
-    radial-gradient(at 40% 20%, rgb(148 163 184 / 0.08) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgb(99 102 241 / 0.06) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, rgb(34 197 94 / 0.05) 0px, transparent 50%);
+    linear-gradient(to right, rgb(229 231 235 / 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(229 231 235 / 0.6) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
 }
 
 .dark .bg-mesh {
+  background-color: rgb(3 7 18);
   background-image:
-    radial-gradient(at 40% 20%, rgb(148 163 184 / 0.06) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgb(99 102 241 / 0.06) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, rgb(34 197 94 / 0.04) 0px, transparent 50%);
+    linear-gradient(to right, rgb(30 41 59 / 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(30 41 59 / 0.5) 1px, transparent 1px);
 }
