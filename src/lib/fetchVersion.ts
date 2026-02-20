@@ -257,6 +257,10 @@ const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitla
 const CRAN_R_LISTING = 'https://cran.rstudio.com/src/base/R-4/'
 const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
 
+/** Single CORS proxy for R (cors.lol and cors-anywhere block or restrict origins). */
+const R_PROXIES_ENCODED = ['https://api.allorigins.win/raw?url=']
+const R_PROXIES_RAW: string[] = []
+
 /** Extract latest R version from CRAN directory listing (e.g. "R-4.5.2.tar.gz" -> "4.5.2"). */
 function parseLatestRFromListing(text: string): string {
   const re = /R-(\d+\.\d+\.\d+)\.tar\.(?:gz|xz)/g
@@ -282,12 +286,12 @@ function withTimeout<T>(p: Promise<T>, timeoutMs: number): Promise<T> {
   ])
 }
 
-/** R: CRAN and r-hub have no CORS; use proxy only so no cross-origin request from app origin. */
+/** R: CRAN and r-hub have no CORS; use proxy only. Use R_PROXIES_* to avoid proxies that block our origin. */
 export async function fetchRVersion(): Promise<string> {
   const timeoutMs = 10_000
   const proxyUrls = [
-    ...CORS_PROXIES_ENCODED.map((p) => p + encodeURIComponent(CRAN_R_LISTING)),
-    ...CORS_PROXIES_RAW.map((p) => p + CRAN_R_LISTING),
+    ...R_PROXIES_ENCODED.map((p) => p + encodeURIComponent(CRAN_R_LISTING)),
+    ...R_PROXIES_RAW.map((p) => p + CRAN_R_LISTING),
   ]
   const tryCranViaProxy = (url: string): Promise<string> =>
     fetch(url)
@@ -300,8 +304,8 @@ export async function fetchRVersion(): Promise<string> {
 
   const encodedHub = encodeURIComponent(R_HUB_API)
   const rhubProxyUrls = [
-    ...CORS_PROXIES_ENCODED.map((p) => p + encodedHub),
-    ...CORS_PROXIES_RAW.map((p) => p + R_HUB_API),
+    ...R_PROXIES_ENCODED.map((p) => p + encodedHub),
+    ...R_PROXIES_RAW.map((p) => p + R_HUB_API),
   ]
 
   const cranViaProxies = await Promise.allSettled(
