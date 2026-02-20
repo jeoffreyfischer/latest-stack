@@ -253,9 +253,23 @@ export async function fetchExpoVersion(): Promise<string> {
 
 const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/releases?per_page=1'
 
+/** CRAN R-4 source listing (plain text or HTML); parse for latest R-X.Y.Z. Avoids r-hub CORS. */
+const CRAN_R_LISTING = 'https://cran.rstudio.com/src/base/R-4/'
 const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
 
-function parseRVersion(d: unknown): string {
+/** Extract latest R version from CRAN directory listing (e.g. "R-4.5.2.tar.gz" -> "4.5.2"). */
+function parseLatestRFromListing(text: string): string {
+  const re = /R-(\d+\.\d+\.\d+)\.tar\.(?:gz|xz)/g
+  let match: RegExpExecArray | null
+  let best = ''
+  while ((match = re.exec(text)) !== null) {
+    const v = match[1]
+    if (!best || compareSemver(v, best) > 0) best = v
+  }
+  return best
+}
+
+function parseRHubVersion(d: unknown): string {
   return (d as { version?: string }).version ?? ''
 }
 
@@ -268,34 +282,46 @@ function withTimeout<T>(p: Promise<T>, timeoutMs: number): Promise<T> {
   ])
 }
 
-/** R-hub API: try direct fetch first (fast); if CORS blocks, try proxies in parallel so first success wins. */
+/** R: fetch from CRAN listing first (no r-hub direct = no CORS error); fallback to r-hub via proxy only. */
 export async function fetchRVersion(): Promise<string> {
-  try {
-    const res = await fetch(R_HUB_API)
-    if (res.ok) {
-      const data = await res.json()
-      const v = parseRVersion(data)
-      if (v) return v
-    }
-  } catch {
-    // CORS or network error; fall back to proxies
-  }
-  const encoded = encodeURIComponent(R_HUB_API)
+  const timeoutMs = 10_000
   const proxyUrls = [
-    ...CORS_PROXIES_ENCODED.map((p) => p + encoded),
+    ...CORS_PROXIES_ENCODED.map((p) => p + encodeURIComponent(CRAN_R_LISTING)),
+    ...CORS_PROXIES_RAW.map((p) => p + CRAN_R_LISTING),
+  ]
+  const tryCran = (): Promise<string> =>
+    fetch(CRAN_R_LISTING)
+      .then((r) => (r.ok ? r.text() : Promise.reject(new Error('not ok'))))
+      .then(parseLatestRFromListing)
+  const tryCranViaProxy = (url: string): Promise<string> =>
+    fetch(url)
+      .then((r) => (r.ok ? r.text() : Promise.reject(new Error('not ok'))))
+      .then(parseLatestRFromListing)
+  const tryRhubViaProxy = (url: string): Promise<string> =>
+    fetch(url)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('not ok'))))
+      .then(parseRHubVersion)
+
+  const encodedHub = encodeURIComponent(R_HUB_API)
+  const rhubProxyUrls = [
+    ...CORS_PROXIES_ENCODED.map((p) => p + encodedHub),
     ...CORS_PROXIES_RAW.map((p) => p + R_HUB_API),
   ]
-  const results = await Promise.allSettled(
-    proxyUrls.map((url) =>
-      withTimeout(
-        fetch(url)
-          .then((r) => (r.ok ? r.json() : Promise.reject(new Error('not ok'))))
-          .then(parseRVersion),
-        10_000
-      )
-    )
+
+  const cranDirect = await withTimeout(tryCran(), timeoutMs).catch(() => '')
+  if (cranDirect) return cranDirect
+
+  const cranViaProxies = await Promise.allSettled(
+    proxyUrls.map((url) => withTimeout(tryCranViaProxy(url), timeoutMs))
   )
-  for (const r of results) {
+  for (const r of cranViaProxies) {
+    if (r.status === 'fulfilled' && r.value) return r.value
+  }
+
+  const rhubViaProxies = await Promise.allSettled(
+    rhubProxyUrls.map((url) => withTimeout(tryRhubViaProxy(url), timeoutMs))
+  )
+  for (const r of rhubViaProxies) {
     if (r.status === 'fulfilled' && r.value) return r.value
   }
   return ''
