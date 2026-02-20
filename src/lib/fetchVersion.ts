@@ -255,9 +255,50 @@ const GITLAB_RUNNER_API = 'https://gitlab.com/api/v4/projects/gitlab-org%2Fgitla
 
 const R_HUB_API = 'https://api.r-hub.io/rversions/r-release'
 
-/** R-hub API has no CORS; use proxy only. */
+function parseRVersion(d: unknown): string {
+  return (d as { version?: string }).version ?? ''
+}
+
+function withTimeout<T>(p: Promise<T>, timeoutMs: number): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), timeoutMs)
+    ),
+  ])
+}
+
+/** R-hub API: try direct fetch first (fast); if CORS blocks, try proxies in parallel so first success wins. */
 export async function fetchRVersion(): Promise<string> {
-  return fetchWithCorsProxy(R_HUB_API, (d) => (d as { version?: string }).version ?? '')
+  try {
+    const res = await fetch(R_HUB_API)
+    if (res.ok) {
+      const data = await res.json()
+      const v = parseRVersion(data)
+      if (v) return v
+    }
+  } catch {
+    // CORS or network error; fall back to proxies
+  }
+  const encoded = encodeURIComponent(R_HUB_API)
+  const proxyUrls = [
+    ...CORS_PROXIES_ENCODED.map((p) => p + encoded),
+    ...CORS_PROXIES_RAW.map((p) => p + R_HUB_API),
+  ]
+  const results = await Promise.allSettled(
+    proxyUrls.map((url) =>
+      withTimeout(
+        fetch(url)
+          .then((r) => (r.ok ? r.json() : Promise.reject(new Error('not ok'))))
+          .then(parseRVersion),
+        10_000
+      )
+    )
+  )
+  for (const r of results) {
+    if (r.status === 'fulfilled' && r.value) return r.value
+  }
+  return ''
 }
 
 /** Qwik framework: GitHub latest is eslint-plugin; use npm @builder.io/qwik. */
