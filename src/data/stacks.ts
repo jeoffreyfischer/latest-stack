@@ -121,15 +121,6 @@ export const STACK_DEFINITIONS: Omit<Stack, 'latestVersion' | 'isFavorite'>[] = 
     iconSlug: 'zig',
   },
   {
-    id: '61',
-    name: 'R',
-    category: 'language',
-    url: 'https://r-project.org',
-    versionSource: 'r',
-    versionUrl: 'https://cran.r-project.org/',
-    iconSlug: 'r',
-  },
-  {
     id: '5',
     name: 'React',
     category: 'frontend',
