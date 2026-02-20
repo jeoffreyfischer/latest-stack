@@ -282,17 +282,13 @@ function withTimeout<T>(p: Promise<T>, timeoutMs: number): Promise<T> {
   ])
 }
 
-/** R: fetch from CRAN listing first (no r-hub direct = no CORS error); fallback to r-hub via proxy only. */
+/** R: CRAN and r-hub have no CORS; use proxy only so no cross-origin request from app origin. */
 export async function fetchRVersion(): Promise<string> {
   const timeoutMs = 10_000
   const proxyUrls = [
     ...CORS_PROXIES_ENCODED.map((p) => p + encodeURIComponent(CRAN_R_LISTING)),
     ...CORS_PROXIES_RAW.map((p) => p + CRAN_R_LISTING),
   ]
-  const tryCran = (): Promise<string> =>
-    fetch(CRAN_R_LISTING)
-      .then((r) => (r.ok ? r.text() : Promise.reject(new Error('not ok'))))
-      .then(parseLatestRFromListing)
   const tryCranViaProxy = (url: string): Promise<string> =>
     fetch(url)
       .then((r) => (r.ok ? r.text() : Promise.reject(new Error('not ok'))))
@@ -307,9 +303,6 @@ export async function fetchRVersion(): Promise<string> {
     ...CORS_PROXIES_ENCODED.map((p) => p + encodedHub),
     ...CORS_PROXIES_RAW.map((p) => p + R_HUB_API),
   ]
-
-  const cranDirect = await withTimeout(tryCran(), timeoutMs).catch(() => '')
-  if (cranDirect) return cranDirect
 
   const cranViaProxies = await Promise.allSettled(
     proxyUrls.map((url) => withTimeout(tryCranViaProxy(url), timeoutMs))
