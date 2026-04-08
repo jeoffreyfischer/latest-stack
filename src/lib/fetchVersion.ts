@@ -8,10 +8,30 @@ function normalizeTag(tag: string): string {
     .replace(/^v/, '')              // standard: "v1.2.3" → "1.2.3"
 }
 
-const headers: HeadersInit = {}
-const token = (import.meta as { env?: { VITE_GITHUB_TOKEN?: string } }).env?.VITE_GITHUB_TOKEN
-if (token) {
-  headers.Authorization = `Bearer ${token}`
+/** Baked-in at build time; invalid/expired tokens make GitHub return 401 for every call. */
+function getGithubToken(): string {
+  const raw = (import.meta as { env?: { VITE_GITHUB_TOKEN?: string } }).env?.VITE_GITHUB_TOKEN
+  if (typeof raw !== 'string') return ''
+  const t = raw.trim()
+  if (!t || t === 'undefined' || t === 'null') return ''
+  return t
+}
+
+const githubTokenForApi = getGithubToken()
+const githubAuthHeaders: Record<string, string> | undefined = githubTokenForApi
+  ? { Authorization: `Bearer ${githubTokenForApi}` }
+  : undefined
+
+/** Public repo data works anonymously; retry without auth if the PAT is bad or revoked. */
+async function githubApiFetch(url: string): Promise<Response> {
+  if (!githubAuthHeaders) {
+    return fetch(url)
+  }
+  const res = await fetch(url, { headers: githubAuthHeaders })
+  if (res.status === 401) {
+    return fetch(url)
+  }
+  return res
 }
 
 /** Proxies that use ?url= with encoded target URL */
@@ -77,9 +97,8 @@ export async function fetchJavaVersion(): Promise<string> {
 /** Fetches latest version from GitHub tags (e.g. repos that don't use Releases). */
 async function fetchVersionFromTags(owner: string, repo: string): Promise<string> {
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`,
-      { headers }
+    const res = await githubApiFetch(
+      `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`
     )
     if (!res.ok) return ''
     const data = (await res.json()) as { name: string }[]
@@ -93,9 +112,8 @@ async function fetchVersionFromTags(owner: string, repo: string): Promise<string
 /** Uses GitHub Releases only (no tags fallback). */
 export async function fetchVersion(owner: string, repo: string): Promise<string> {
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
-      { headers }
+    const res = await githubApiFetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
     )
     if (!res.ok) return ''
     const data = (await res.json()) as { tag_name: string }
@@ -208,9 +226,8 @@ export async function fetchDartVersion(): Promise<string> {
 /** SQLite uses tags (version-X.Y.Z or vesion-X.Y.Z typo), not GitHub Releases. */
 export async function fetchSqliteVersion(): Promise<string> {
   try {
-    const res = await fetch(
-      'https://api.github.com/repos/sqlite/sqlite/tags?per_page=30',
-      { headers }
+    const res = await githubApiFetch(
+      'https://api.github.com/repos/sqlite/sqlite/tags?per_page=30'
     )
     if (!res.ok) return ''
     const data = (await res.json()) as { name: string }[]
